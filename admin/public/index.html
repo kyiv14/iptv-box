@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IPTV Manager</title>
+    <link rel="icon" href="https://moe-iptv.vercel.app/iptv_icon.ico" type="image/x-icon">
+    <style>
+        :root {
+            --system-blue: #007AFF;
+            --system-blue-light: #5AC8FA;
+            --system-gray: #8E8E93;
+            --system-gray-light: #F2F2F7;
+            --system-green: #34C759;
+            --system-red: #FF3B30;
+            --system-orange: #FF9500;
+        }
+        
+        /* Исправления для одинакового отображения */
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            touch-action: manipulation;
+            width: 100%;
+            height: 100%;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            touch-action: manipulation;
+            max-width: 100vw;
+            overflow-x: hidden;
+            background-color: var(--system-gray-light);
+            color: #1C1C1E;
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+            width: 100%;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            padding: 20px;
+            margin: 20px auto;
+        }
+        
+        .header {
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            font-size: 22px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: var(--system-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(.25,.8,.25,1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        
+        button:active {
+            opacity: 0.8;
+            transform: scale(0.98);
+            box-shadow: none;
+        }
+        
+        button.secondary {
+            background: var(--system-blue-light);
+            color: white;
+            border: none;
+        }
+        
+        button.danger {
+            background: white;
+            color: var(--system-red);
+            border: 1px solid var(--system-red);
+        }
+        
+        button.warning {
+            background: white;
+            color: var(--system-orange);
+            border: 1px solid var(--system-orange);
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #D1D1D6;
+            border-radius: 8px;
+            font-size: 17px;
+            margin-bottom: 12px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--system-blue);
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+        }
+        
+        .client-card {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid #D1D1D6;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        
+        .client-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+        }
+        
+        .client-card.expired {
+            border: 2px solid var(--system-red);
+        }
+        
+        .client-card h3 {
+            margin: 0 0 5px 0;
+            font-size: 22px;
+            color: var(--system-blue);
+        }
+        
+        .client-card p {
+            margin: 0;
+            font-size: 22px;
+            color: var(--system-gray);
+        }
+        
+        .days-left {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 22px;
+            font-weight: 500;
+        }
+        
+        .days-left.positive {
+            color: var(--system-green);
+        }
+        
+        .days-left.negative {
+            color: var(--system-red);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 14px;
+            padding: 20px;
+            animation: modalOpen 0.3s ease-out;
+            font-size: 20px;
+        }
+        
+        @keyframes modalOpen {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h2 {
+            font-size: 22px;
+            margin: 0;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .close-btn {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        #newClientModal .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--system-gray);
+            margin-bottom: 8px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #D1D1D6;
+            border-radius: 8px;
+            font-size: 17px;
+            background: white;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--system-blue);
+            box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+        }
+        
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        #newClientModal .modal-actions {
+            margin-top: 15px;
+        }
+        
+        .modal-actions-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .modal-actions-row button {
+            flex: 1;
+        }
+        
+        #status {
+            padding: 16px;
+            font-size: 15px;
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .success {
+            color: var(--system-green);
+        }
+        
+        .error {
+            color: var(--system-red);
+        }
+        
+        .client-info p {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .client-info strong {
+            font-weight: 600;
+        }
+        
+        .link-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        
+        .link {
+            color: #000;
+            text-decoration: none;
+            flex-grow: 1;
+            word-break: break-all;
+        }
+        
+        .copy-btn {
+            background: transparent;
+            color: var(--system-blue);
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            flex-shrink: 0;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+        }
+        
+        .icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+        
+        .auth-modal {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .auth-container {
+            background: white;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 14px;
+            padding: 20px;
+            animation: modalOpen 0.3s ease-out;
+        }
+        
+        .auth-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #D1D1D6;
+            border-radius: 8px;
+            font-size: 17px;
+            margin-bottom: 12px;
+        }
+        
+        .auth-error {
+            color: var(--system-red);
+            margin-bottom: 12px;
+            text-align: center;
+            display: none;
+        }
+        
+        .clients-counter {
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 500;
+            font-size: 20px;
+        }
+        
+        .clients-counter span {
+            font-size: 22px;
+            color: var(--system-blue);
+        }
+        
+        /* Медиа-запросы для одинакового отображения */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .container {
+                margin: 10px auto;
+                padding: 15px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 15px;
+            }
+        }
+        
+        @media (min-width: 1200px) {
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                padding-top: 40px;
+            }
+        }
+        
+        /* Fallback для иконок */
+        .icon-fallback {
+            width: 24px;
+            height: 24px;
+            background: var(--system-gray-light);
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--system-gray);
+        }
+
+        /* Стиль для поля ввода ключа в модалке информации */
+        #clientInfoContent input {
+            padding: 8px;
+            font-size: 17px;
+            margin-left: 10px;
+        }
+
+        #clientInfoContent .key-edit-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        #clientInfoContent .key-edit-group label {
+            margin-bottom: 0;
+        }
+        
+        #clientInfoContent .key-edit-group input {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="authModal" class="auth-modal" style="display: flex;">
+        <div class="auth-container">
+            <h2 style="text-align: center; margin-bottom: 20px;">Авторизация</h2>
+            <input type="text" id="loginInput" class="auth-input" placeholder="Логин">
+            <input type="password" id="passwordInput" class="auth-input" placeholder="Пароль">
+            <div id="authError" class="auth-error">Неверный логин или пароль</div>
+            <button id="authButton">Войти</button>
+        </div>
+    </div>
+
+    <div class="container" id="appContainer" style="display: none;">
+        <div class="header">
+            <h1>IPTV Manager</h1>
+        </div>
+        
+        <div class="clients-counter">Клиентов: <span id="clientsCount">0</span></div>
+        
+        <div class="buttons">
+            <button id="newClientBtn">Новый<br>клиент</button>
+            <button id="channelListBtn" class="secondary">Список<br>каналов</button>
+            <button id="channelEditorBtn" class="secondary" onclick="window.open('https://read24.vercel.app', '_blank')">Редактор<br>каналов</button>
+            <button id="shortenLinkBtn" class="secondary" onclick="window.open('https://short24.vercel.app/', '_blank')">Сократить<br>ссылку</button>
+        </div>
+        <input type="text" id="searchInput" class="search-input" placeholder="Поиск по имени или номеру...">
+        
+        <div id="clientsList">
+            </div>
+    </div>
+
+    <div id="newClientModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Новый клиент</h2>
+                <span class="close-btn" onclick="closeModal('newClientModal')">×</span>
+            </div>
+            
+            <div class="form-group">
+                <label>Имя клиента</label>
+                <input type="text" id="clientName">
+            </div>
+            
+            <div class="form-group">
+                <label>Номер телефона</label>
+                <input type="tel" id="phone" inputmode="tel">
+            </div>
+            
+            <div class="form-group">
+                <label>Ключ доступа</label>
+                <input type="text" id="key">
+            </div>
+            
+            <div class="form-group">
+                <label>Дата оплаты</label>
+                <input type="date" id="paymentDate">
+            </div>
+            
+            <div class="form-group">
+                <label>Количество месяцев</label>
+                <select id="months">
+                    <option value="1">1 месяц</option>
+                    <option value="2">2 месяца</option>
+                    <option value="3">3 месяца</option>
+                    <option value="4">4 месяца</option>
+                    <option value="5">5 месяцев</option>
+                    <option value="6">6 месяцев</option>
+                    <option value="7">7 месяцев</option>
+                    <option value="8">8 месяцев</option>
+                    <option value="9">9 месяцев</option>
+                    <option value="10">10 месяцев</option>
+                    <option value="11">11 месяцев</option>
+                    <option value="12">12 месяцев</option>
+                </select>
+            </div>
+            
+            <div class="modal-actions">
+                <div class="modal-actions-row">
+                    <button id="cancelBtn" class="secondary">Отмена</button>
+                    <button id="saveBtn">Сохранить</button>
+                </div>
+            </div>
+            
+            <div id="status"></div>
+        </div>
+    </div>
+
+    <div id="clientInfoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>ИНФОРМАЦИЯ О КЛИЕНТЕ</h2>
+                <span class="close-btn" onclick="closeModal('clientInfoModal')">×</span>
+            </div>
+            
+            <div id="clientInfoContent" class="client-info">
+                </div>
+            
+            <div class="modal-actions">
+                <div class="modal-actions-row">
+                    <button id="editBtn" class="warning">Редактировать</button>
+                    <button id="deleteBtn" class="danger">Удалить</button>
+                </div>
+                <button id="updateKeyBtn" class="warning">Обновить ключ</button> <button id="fileBtn">Файл</button>
+            </div>
+
+            <div id="clientInfoStatus" style="padding: 10px; font-size: 15px; display: none; margin-top: 10px;"></div>
+
+        </div>
+    </div>
+
+    <div id="editClientModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Редактировать клиента</h2>
+                <span class="close-btn" onclick="closeModal('editClientModal')">×</span>
+            </div>
+            
+            <div class="form-group">
+                <label>Имя клиента</label>
+                <input type="text" id="editClientName">
+            </div>
+            
+            <div class="form-group">
+                <label>Номер телефона</label>
+                <input type="tel" id="editPhone" inputmode="tel">
+            </div>
+            
+            <div class="form-group">
+                <label>Ключ доступа</label>
+                <input type="text" id="editKey">
+            </div>
+            
+            <div class="form-group">
+                <label>Дата оплаты</label>
+                <input type="date" id="editPaymentDate">
+            </div>
+            
+            <div class="form-group">
+                <label>Количество месяцев</label>
+                <select id="editMonths">
+                    <option value="1">1 месяц</option>
+                    <option value="2">2 месяца</option>
+                    <option value="3">3 месяца</option>
+                    <option value="4">4 месяца</option>
+                    <option value="5">5 месяцев</option>
+                    <option value="6">6 месяцев</option>
+                    <option value="7">7 месяцев</option>
+                    <option value="8">8 месяцев</option>
+                    <option value="9">9 месяцев</option>
+                    <option value="10">10 месяцев</option>
+                    <option value="11">11 месяцев</option>
+                    <option value="12">12 месяцев</option>
+                </select>
+            </div>
+            
+            <div class="modal-actions">
+                <div class="modal-actions-row">
+                    <button id="editCancelBtn" class="secondary">Отмена</button>
+                    <button id="editSaveBtn">Сохранить</button>
+                </div>
+            </div>
+            
+            <div id="editStatus"></div>
+        </div>
+    </div>
+
+    <script>
+        // Конфигурация
+        const TOKEN_PARTS = ["ghp_to27A4", "Q0SrXyfBANG1", "fxQvzyhhgwrn0rm1ra"];
+        const REPO_CONFIG = {
+            owner: "kyiv14",
+            repo: "moe-iptv",
+            branch: "main",
+            clientsFile: "public/clients.json"
+        };
+
+        // Хранилище клиентов
+        let clients = JSON.parse(localStorage.getItem('iptv_clients')) || [];
+        let currentClientId = null;
+        // Переменная для хранения оригинальных данных клиента перед редактированием
+        let originalClientData = null; 
+
+        // Принудительная установка viewport если отсутствует
+        function ensureViewport() {
+            if (!document.querySelector('meta[name="viewport"]')) {
+                const meta = document.createElement('meta');
+                meta.name = 'viewport';
+                meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+                document.head.appendChild(meta);
+                console.log('Viewport meta tag added programmatically');
+            }
+        }
+
+        // Обработка ошибок загрузки иконок
+        function handleImageErrors() {
+            document.querySelectorAll('img').forEach(img => {
+                img.onerror = function() {
+                    console.log('Image failed to load:', this.src);
+                    const altText = this.alt || 'icon';
+                    this.outerHTML = `<span class="icon-fallback" title="${altText}">${altText.charAt(0)}</span>`;
+                };
+            });
+        }
+
+        function getGitHubToken() {
+            return TOKEN_PARTS.join('');
+        }
+
+        // Функция для извлечения последних 10 цифр номера телефона
+        function extractPhoneNumber(phone) {
+            const digits = phone.replace(/\D/g, '');
+            return digits.slice(-10); // Берем только последние 10 цифр
+        }
+
+        // Функция для создания сокращенной ссылки через is.gd API
+        async function createIsGdShortUrl(phone) {
+            try {
+                const cleanPhone = extractPhoneNumber(phone);
+                const longUrl = `https://moe-iptv.vercel.app/${cleanPhone}.m3u`;
+                
+                const apiUrl = `https://is.gd/create.php?format=json&url=${encodeURIComponent(longUrl)}&shorturl=${cleanPhone}`;
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.errorcode) {
+                    // Если ссылка уже существует или другая ошибка, все равно возвращаем нужный формат
+                    console.log('is.gd API сообщение:', data.errormessage);
+                    return `https://is.gd/${cleanPhone}`;
+                }
+                
+                return data.shorturl;
+            } catch (error) {
+                console.error('Ошибка создания is.gd ссылки:', error);
+                // В случае ошибки все равно возвращаем ссылку в нужном формате
+                return `https://is.gd/${extractPhoneNumber(phone)}`;
+            }
+        }
+
+        // Функция для получения всех ссылок для клиента
+        function generateClientLinks(phone) {
+            const cleanPhone = extractPhoneNumber(phone);
+            const baseUrl = `https://moe-iptv.vercel.app/${cleanPhone}.m3u`;
+            
+            return [
+                `https://is.gd/${cleanPhone}`,
+                `https://rebrand.ly/${cleanPhone}`,
+                baseUrl
+            ];
+        }
+
+        // Загрузка клиентов из GitHub
+        async function loadClientsFromGitHub() {
+            try {
+                const apiUrl = `https://api.github.com/repos/${REPO_CONFIG.owner}/${REPO_CONFIG.repo}/contents/${REPO_CONFIG.clientsFile}`;
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'Authorization': `Bearer ${getGitHubToken()}`,
+                        'Accept': 'application/vnd.github+json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const content = decodeURIComponent(escape(atob(data.content)));
+                    return JSON.parse(content) || [];
+                } else if (response.status === 404) {
+                    // Файл не существует, создадим его при первом сохранении
+                    return [];
+                }
+                return [];
+            } catch (error) {
+                console.error('Ошибка загрузки клиентов:', error);
+                return [];
+            }
+        }
+
+        // Сохранение клиентов в GitHub
+        async function saveClientsToGitHub() {
+            try {
+                let sha = null;
+                try {
+                    sha = await getFileSha(REPO_CONFIG.clientsFile);
+                } catch (e) {
+                    // Файл не существует, sha останется null
+                }
+                
+                const apiUrl = `https://api.github.com/repos/${REPO_CONFIG.owner}/${REPO_CONFIG.repo}/contents/${REPO_CONFIG.clientsFile}`;
+                const response = await fetch(apiUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${getGitHubToken()}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github+json'
+                    },
+                    body: JSON.stringify({
+                        message: 'Обновление списка клиентов',
+                        content: btoa(unescape(encodeURIComponent(JSON.stringify(clients)))),
+                        branch: REPO_CONFIG.branch,
+                        sha: sha
+                    })
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message || "Ошибка при сохранении на GitHub");
+                }
+                return true;
+            } catch (error) {
+                console.error('Ошибка синхронизации с GitHub:', error);
+                throw error;
+            }
+        }
+
+        // Получение SHA файла
+        async function getFileSha(filename) {
+            try {
+                const apiUrl = `https://api.github.com/repos/${REPO_CONFIG.owner}/${REPO_CONFIG.repo}/contents/${filename}`;
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'Authorization': `Bearer ${getGitHubToken()}`,
+                        'Accept': 'application/vnd.github+json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    return data.sha;
+                }
+                return null;
+            } catch (error) {
+                console.error('Ошибка при получении SHA:', error);
+                return null;
+            }
+        }
+
+        // Удаление файла плейлиста с GitHub
+        async function deletePlaylistFile(client) {
+            try {
+                const cleanPhone = extractPhoneNumber(client.phone);
+                const filename = `public/${cleanPhone}.m3u`;
+                
+                // Получаем SHA файла для удаления
+                const sha = await getFileSha(filename);
+                
+                if (sha) {
+                    const apiUrl = `https://api.github.com/repos/${REPO_CONFIG.owner}/${REPO_CONFIG.repo}/contents/${filename}`;
+                    const response = await fetch(apiUrl, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${getGitHubToken()}`,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/vnd.github+json'
+                        },
+                        body: JSON.stringify({
+                            message: `Удален плейлист для клиента ${cleanPhone}`,
+                            sha: sha,
+                            branch: REPO_CONFIG.branch
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        console.warn('Не удалось удалить файл плейлиста:', await response.text());
+                    }
+                }
+            } catch (error) {
+                console.warn('Ошибка при удалении файла плейлиста:', error);
+                // Продолжаем удаление клиента даже если файл не найден
+            }
+        }
+
+        // Инициализация клиентов (загрузка из GitHub)
+        async function initClients() {
+            const githubClients = await loadClientsFromGitHub();
+            if (githubClients.length > 0) {
+                clients = githubClients;
+                localStorage.setItem('iptv_clients', JSON.stringify(clients));
+            }
+            renderClients();
+            updateClientsCounter();
+            handleImageErrors(); // Обработка ошибок иконок после рендера
+        }
+
+        // Сохранение клиентов (локально и в GitHub)
+        async function saveClients() {
+            localStorage.setItem('iptv_clients', JSON.stringify(clients));
+            try {
+                await saveClientsToGitHub();
+                updateClientsCounter();
+            } catch (error) {
+                console.error('Ошибка синхронизации с GitHub:', error);
+                throw error;
+            }
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'Не указана';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ru-RU');
+        }
+
+        function calculateDaysLeft(paymentDate, months) {
+            if (!paymentDate || !months) return 0;
+            
+            const paymentDateObj = new Date(paymentDate);
+            const endDate = new Date(paymentDateObj);
+            endDate.setMonth(endDate.getMonth() + parseInt(months));
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            const diffTime = endDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            return diffDays;
+        }
+
+        function forceDownload(url, filename) {
+            fetch(url)
+                .then(response => response.blob())
+                .then(blob => {
+                    const blobUrl = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = blobUrl;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    setTimeout(() => {
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(blobUrl);
+                    }, 100);
+                })
+                .catch(error => console.error('Ошибка при скачивании файла:', error));
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+            // Сбрасываем статус при открытии модалки информации о клиенте
+            if (modalId === 'clientInfoModal') {
+                showClientInfoStatus('', '');
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function filterClients(searchText) {
+            if (!searchText) {
+                return clients;
+            }
+
+            const lowerCaseSearchText = searchText.toLowerCase().trim();
+            const searchDigits = lowerCaseSearchText.replace(/\D/g, '');
+
+            return clients.filter(client => {
+                const clientName = (client.name || '').toLowerCase();
+                const nameMatch = clientName.includes(lowerCaseSearchText);
+
+                const clientPhoneDigits = client.phone.replace(/\D/g, '');
+                const phoneMatch = searchDigits.length > 0 && clientPhoneDigits.includes(searchDigits);
+
+                return nameMatch || phoneMatch;
+            });
+        }
+
+        function updateClientsCounter() {
+            document.getElementById('clientsCount').textContent = clients.length;
+        }
+
+        function renderClients(clientsToRender = null) {
+            const clientsList = document.getElementById('clientsList');
+            clientsList.innerHTML = '';
+            
+            const clientsData = clientsToRender || clients;
+            
+            clientsData.forEach((client, index) => {
+                const daysLeft = calculateDaysLeft(client.paymentDate, client.months);
+                const daysLeftClass = daysLeft >= 0 ? 'positive' : 'negative';
+                const daysLeftText = daysLeft >= 0 ? `${daysLeft} дн.` : `${Math.abs(daysLeft)} дн.`;
+                
+                const card = document.createElement('div');
+                card.className = 'client-card';
+                if (daysLeft < 0) {
+                    card.classList.add('expired');
+                }
+                card.innerHTML = `
+                    <h3>${client.name || 'Без имени'}</h3>
+                    <p>${client.phone}</p>
+                    <div class="days-left ${daysLeftClass}">${daysLeftText}</div>
+                `;
+                card.onclick = () => {
+                    currentClientId = clients.findIndex(c => c.phone === client.phone);
+                    // Сохраняем оригинальные данные перед открытием модалки
+                    originalClientData = { ...client }; 
+                    showClientInfo(client);
+                };
+                clientsList.appendChild(card);
+            });
+            
+            updateClientsCounter();
+        }
+
+        function copyToClipboard(text, event) {
+            event.preventDefault();
+            navigator.clipboard.writeText(text).catch(err => {
+                console.error('Ошибка копирования: ', err);
+            });
+            return false;
+        }
+
+        function showClientInfo(client) {
+            const daysLeft = calculateDaysLeft(client.paymentDate, client.months);
+            const daysLeftText = daysLeft >= 0 ? `Осталось ${daysLeft} дней` : `Просрочено на ${Math.abs(daysLeft)} дней`;
+            
+            // Генерируем ссылки
+            const links = generateClientLinks(client.phone);
+            
+            let linksHTML = '';
+            links.forEach(link => {
+                linksHTML += `
+                    <div class="link-container">
+                        <a href="${link}" class="link" target="_blank">${link}</a>
+                        <button class="copy-btn" onclick="copyToClipboard('${link}', event)" title="Копировать">
+                            <img src="https://moe-iptv.vercel.app/copy.png" alt="Копировать" class="icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'">
+                            <span class="icon-fallback" style="display:none">C</span>
+                        </button>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('clientInfoContent').innerHTML = `
+                <p><img src="https://moe-iptv.vercel.app/user.png" alt="Имя" class="icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'"><span class="icon-fallback" style="display:none">U</span><strong>${client.name || 'Не указано'}</strong></p>
+                <p><img src="https://moe-iptv.vercel.app/call.png" alt="Телефон" class="icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'"><span class="icon-fallback" style="display:none">T</span>${client.phone}</p>
+                <div class="key-edit-group">
+                    <p style="margin: 0; display: flex; align-items: center; gap: 10px;">
+                        <img src="https://moe-iptv.vercel.app/key.png" alt="Ключ" class="icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'">
+                        <span class="icon-fallback" style="display:none">K</span>
+                        <strong style="flex-shrink: 0;">Ключ:</strong>
+                    </p>
+                    <input type="text" id="newKeyInput" value="${client.key}" placeholder="Новый ключ доступа" style="font-size: 15px; padding: 12px; border: 1px solid #D1D1D6; border-radius: 8px;">
+                </div>
+                <p><img src="https://moe-iptv.vercel.app/date.png" alt="Дата" class="icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'"><span class="icon-fallback" style="display:none">D</span>${formatDate(client.paymentDate)}</p>
+                <p><img src="https://moe-iptv.vercel.app/mail.png" alt="Срок" class="icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'"><span class="icon-fallback" style="display:none">S</span><strong>${daysLeftText}</strong></p>
+                <p><img src="https://moe-iptv.vercel.app/link.png" alt="Ссылки" class="icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline'"><span class="icon-fallback" style="display:none">L</span><strong>Ссылки:</strong></p>
+                ${linksHTML}
+            `;
+            openModal('clientInfoModal');
+        }
+
+        function createPlaylist(phone, key) {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const cleanPhone = extractPhoneNumber(phone);
+                    if (cleanPhone.length < 10) {
+                        throw new Error("Номер должен содержать минимум 10 цифр");
+                    }
+                    const filename = `public/${cleanPhone}.m3u`;
+                    
+                    const playlistUrl = 'https://moe-iptv.vercel.app/sample.m3u';
+                    const response = await fetch(playlistUrl);
+                    let content = await response.text();
+                    content = content.replace(/\/iptv\/\w+\//g, `/iptv/${key}/`);
+                    
+                    const sha = await getFileSha(filename); // Получаем SHA, чтобы заменить файл
+                    
+                    const apiUrl = `https://api.github.com/repos/${REPO_CONFIG.owner}/${REPO_CONFIG.repo}/contents/${filename}`;
+                    const uploadResponse = await fetch(apiUrl, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${getGitHubToken()}`,
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/vnd.github+json'
+                        },
+                        body: JSON.stringify({
+                            message: `Обновлен плейлист для: ${cleanPhone}`, // Изменено сообщение
+                            content: btoa(unescape(encodeURIComponent(content))),
+                            branch: REPO_CONFIG.branch,
+                            sha: sha // Передаем SHA для обновления
+                        })
+                    });
+                    
+                    if (!uploadResponse.ok) {
+                        const error = await uploadResponse.json();
+                        throw new Error(error.message || "Ошибка при загрузке на GitHub");
+                    }
+
+                    // Автоматически создаем is.gd ссылку через API
+                    const isgdUrl = await createIsGdShortUrl(phone);
+                    console.log('is.gd ссылка создана/обновлена через API:', isgdUrl);
+
+                    resolve({
+                        filename,
+                        content,
+                        isgdUrl
+                    });
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        }
+
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('status');
+            statusEl.innerHTML = message;
+            statusEl.className = type;
+            statusEl.style.display = 'block';
+        }
+        
+        function showEditStatus(message, type) {
+            const statusEl = document.getElementById('editStatus');
+            statusEl.innerHTML = message;
+            statusEl.className = type;
+            statusEl.style.display = 'block';
+        }
+
+        function showClientInfoStatus(message, type) {
+            const statusEl = document.getElementById('clientInfoStatus');
+            statusEl.innerHTML = message;
+            statusEl.className = type;
+            statusEl.style.display = message ? 'block' : 'none'; // Скрываем, если нет сообщения
+        }
+
+        // Обработчики событий
+        document.addEventListener('DOMContentLoaded', () => {
+            // Гарантируем наличие viewport
+            ensureViewport();
+            
+            // Проверка авторизации
+            function checkAuth() {
+                const login = document.getElementById('loginInput').value.toLowerCase();
+                const password = document.getElementById('passwordInput').value;
+                
+                // Исправленные учетные данные
+                if (login === 'zpv' && password === '1975') {
+                    document.getElementById('authModal').style.display = 'none';
+                    document.getElementById('appContainer').style.display = 'block';
+                    initClients();
+                } else {
+                    document.getElementById('authError').style.display = 'block';
+                }
+            }
+
+            document.getElementById('authButton').addEventListener('click', checkAuth);
+            
+            // Обработка нажатия Enter в форме авторизации
+            document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    checkAuth();
+                }
+            });
+            
+            document.getElementById('loginInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    checkAuth();
+                }
+            });
+            
+            document.getElementById('newClientBtn').addEventListener('click', () => {
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('paymentDate').value = today;
+                openModal('newClientModal');
+            });
+            
+            document.getElementById('channelListBtn').addEventListener('click', () => {
+                window.location.href = 'https://iptv-spisok.vercel.app/';
+            });
+            
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                const searchText = e.target.value;
+                const filteredClients = filterClients(searchText);
+                renderClients(filteredClients);
+            });
+            
+            document.getElementById('cancelBtn').addEventListener('click', () => {
+                closeModal('newClientModal');
+            });
+            
+            document.getElementById('saveBtn').addEventListener('click', async () => {
+                const name = document.getElementById('clientName').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const key = document.getElementById('key').value.trim();
+                const paymentDate = document.getElementById('paymentDate').value;
+                const months = document.getElementById('months').value;
+                const statusEl = document.getElementById('status');
+                
+                if (!phone || !key) {
+                    showStatus("Заполните номер телефона и ключ", "error");
+                    return;
+                }
+
+                try {
+                    statusEl.style.display = 'none';
+                    
+                    const result = await createPlaylist(phone, key);
+                    const filename = result.filename;
+                    
+                    const blob = new Blob([result.content], { type: 'application/x-mpegurl' });
+                    const tempUrl = URL.createObjectURL(blob);
+                    
+                    // Добавляем клиента с дополнительными данными
+                    clients.push({
+                        name,
+                        phone: extractPhoneNumber(phone), // Сохраняем только последние 10 цифр
+                        key,
+                        paymentDate,
+                        months
+                    });
+                    
+                    // Сохраняем клиентов (локально и в GitHub)
+                    await saveClients();
+                    
+                    showStatus(
+                        `Плейлист успешно создан!<br>
+                        is.gd ссылка: ${result.isgdUrl}<br>
+                        <span class="download-link" onclick="forceDownload('${tempUrl}', '${filename.split('/').pop()}')">Скачать ${filename.split('/').pop()}</span>`,
+                        "success"
+                    );
+                    
+                    renderClients();
+                    
+                    // Очищаем форму
+                    document.getElementById('clientName').value = '';
+                    document.getElementById('phone').value = '';
+                    document.getElementById('key').value = '';
+                    document.getElementById('paymentDate').value = new Date().toISOString().split('T')[0];
+                    document.getElementById('months').value = '1';
+                    
+                    // Закрываем модальное окно
+                    closeModal('newClientModal');
+                    
+                } catch (error) {
+                    showStatus(`Ошибка: ${error.message}`, "error");
+                    console.error(error);
+                }
+            });
+            
+            document.getElementById('editBtn').addEventListener('click', () => {
+                if (currentClientId !== null) {
+                    const client = clients[currentClientId];
+                    
+                    document.getElementById('editClientName').value = client.name || '';
+                    document.getElementById('editPhone').value = client.phone;
+                    document.getElementById('editKey').value = client.key;
+                    document.getElementById('editPaymentDate').value = client.paymentDate;
+                    document.getElementById('editMonths').value = client.months;
+                    
+                    closeModal('clientInfoModal');
+                    openModal('editClientModal');
+                }
+            });
+
+            // НОВЫЙ ОБРАБОТЧИК ДЛЯ ОБНОВЛЕНИЯ КЛЮЧА
+            document.getElementById('updateKeyBtn').addEventListener('click', async () => {
+                if (currentClientId !== null) {
+                    const client = clients[currentClientId];
+                    const newKey = document.getElementById('newKeyInput').value.trim();
+                    
+                    if (!newKey) {
+                        showClientInfoStatus("Ключ доступа не может быть пустым.", "error");
+                        return;
+                    }
+
+                    if (newKey === client.key) {
+                        showClientInfoStatus("Новый ключ совпадает с текущим.", "warning");
+                        return;
+                    }
+                    
+                    showClientInfoStatus("Обновление ключа и файла плейлиста...", "warning");
+                    
+                    try {
+                        // 1. Создаем/обновляем плейлист с новым ключом
+                        await createPlaylist(client.phone, newKey);
+                        
+                        // 2. Обновляем ключ в локальном объекте клиента
+                        client.key = newKey;
+                        
+                        // 3. Сохраняем обновленный список клиентов на GitHub
+                        await saveClients();
+
+                        showClientInfoStatus("Ключ и плейлист успешно обновлены! ✅", "success");
+                        
+                        // Обновляем отображение информации о клиенте в модалке
+                        setTimeout(() => showClientInfo(client), 1000); 
+                        
+                        // Обновляем список клиентов на главном экране
+                        renderClients();
+
+                    } catch (error) {
+                        showClientInfoStatus(`Ошибка при обновлении ключа: ${error.message}`, "error");
+                        console.error(error);
+                    }
+                }
+            });
+            // КОНЕЦ НОВОГО ОБРАБОТЧИКА
+            
+            document.getElementById('deleteBtn').addEventListener('click', async () => {
+                if (currentClientId !== null) {
+                    const client = clients[currentClientId];
+                    
+                    if (!confirm(`Вы уверены, что хотите удалить клиента ${client.name || client.phone}?`)) {
+                        return;
+                    }
+                    
+                    try {
+                        // Удаляем файл плейлиста
+                        await deletePlaylistFile(client);
+                        
+                        // Удаляем клиента из списка
+                        clients.splice(currentClientId, 1);
+                        
+                        // Сохраняем обновленный список
+                        await saveClients();
+                        
+                        renderClients();
+                        closeModal('clientInfoModal');
+                        currentClientId = null;
+                    } catch (error) {
+                        showStatus(`Ошибка при удалении: ${error.message}`, "error");
+                    }
+                }
+            });
+            
+            document.getElementById('fileBtn').addEventListener('click', () => {
+                if (currentClientId !== null) {
+                    const client = clients[currentClientId];
+                    const url = `https://raw.githubusercontent.com/${REPO_CONFIG.owner}/${REPO_CONFIG.repo}/${REPO_CONFIG.branch}/public/${client.phone}.m3u`;
+                    forceDownload(url, `${client.phone}.m3u`);
+                }
+            });
+            
+            document.getElementById('editCancelBtn').addEventListener('click', () => {
+                closeModal('editClientModal');
+            });
+            
+            document.getElementById('editSaveBtn').addEventListener('click', async () => {
+                if (currentClientId !== null) {
+                    // Используем originalClientData для сохранения пароля и других старых данных
+                    const client = { ...originalClientData }; 
+                    const name = document.getElementById('editClientName').value.trim();
+                    const phone = document.getElementById('editPhone').value.trim();
+                    const key = document.getElementById('editKey').value.trim();
+                    const paymentDate = document.getElementById('editPaymentDate').value;
+                    const months = document.getElementById('editMonths').value;
+
+                    // Проверяем, изменился ли ключ, чтобы обновить плейлист
+                    const keyChanged = client.key !== key;
+                    
+                    if (!phone || !key) {
+                        showEditStatus("Заполните номер телефона и ключ", "error");
+                        return;
+                    }
+                    
+                    // Обновляем данные клиента в локальном массиве, объединяя старые данные с новыми
+                    clients[currentClientId] = {
+                        ...client, // Старые данные (включая сохраненный password)
+                        name,
+                        phone: extractPhoneNumber(phone),
+                        key,
+                        paymentDate,
+                        months
+                    };
+                    
+                    try {
+                        // Если ключ изменился, обновляем плейлист
+                        if (keyChanged) {
+                            showEditStatus("Обновление ключа и файла плейлиста...", "warning");
+                            await createPlaylist(clients[currentClientId].phone, key);
+                        }
+
+                        // Сохраняем объединенный объект, который теперь содержит password
+                        await saveClients();
+                        
+                        renderClients();
+                        closeModal('editClientModal');
+                        
+                        // Показываем обновленную информацию о клиенте
+                        showClientInfo(clients[currentClientId]);
+                    } catch (error) {
+                        // Если сохранение на GitHub не удалось, откатываем изменения в локальном массиве
+                        clients[currentClientId] = originalClientData; 
+                        showEditStatus(`Ошибка сохранения: ${error.message}`, "error");
+                    }
+                }
+            });
+        });
+
+        // Глобальные функции
+        window.forceDownload = forceDownload;
+        window.copyToClipboard = copyToClipboard;
+        window.closeModal = closeModal;
+    </script>
+</body>
+</html>
