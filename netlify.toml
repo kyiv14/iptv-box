@@ -1,43 +1,52 @@
 [build]
-  command = "echo 'Netlify build complete!'"
-  publish = "/"
+  # Указываем папку, где хранятся ваши Serverless Functions
   functions = "netlify/functions"
-  
-# ===============================================
-# РЕДИРЕКТЫ ДЛЯ ПАПОК
-# ===============================================
+  # Указываем папку, которая будет опубликована (если вся статика в корне, то ".")
+  # Если у вас есть папка public, которая является корнем сайта:
+  # publish = "public" 
 
-# 1. Основной домен ведет на клиентский интерфейс
-[[redirects]]
-  from = "/"
-  to = "/client/index.html"
-  status = 200
+# ======================================================
+# МАРШРУТИЗАЦИЯ И РЕДИРЕКТЫ
+# ======================================================
 
-# 2. /admin ведет на index.html внутри папки admin
 [[redirects]]
-  from = "/admin"
-  to = "/admin/index.html"
-  status = 200
-
-# 3. /api/playlist_link ведет на Netlify Function
-[[redirects]]
+  # 1. РЕДИРЕКТ ФУНКЦИИ (для кнопки "Взять тест")
+  # Направляет все запросы к /api/playlist_link на вашу Serverless Function
   from = "/api/playlist_link"
   to = "/.netlify/functions/playlist_link"
-  status = 200
+  status = 200 # Код 200 (OK) означает, что маршрутизация прозрачна
 
-# 4. Прямой доступ к sample.m3u и moe.m3u из папки assets
 [[redirects]]
+  # 2. РЕДИРЕКТ СТАТИЧЕСКИХ РЕСУРСОВ
+  # Если ваши плейлисты (sample.m3u, moe.m3u) хранятся в папке public/, 
+  # этот редирект помогает их найти.
+  # Если клиентский код (index.html) ищет /sample.m3u, 
+  # а файл лежит в public/sample.m3u
   from = "/sample.m3u"
-  to = "/assets/sample.m3u"
+  to = "/public/sample.m3u"
   status = 200
 
 [[redirects]]
+  # 3. РЕДИРЕКТ СТАТИЧЕСКИХ РЕСУРСОВ
   from = "/moe.m3u"
-  to = "/assets/moe.m3u"
+  to = "/public/moe.m3u"
+  status = 200
+  
+[[redirects]]
+  # 4. РЕДИРЕКТ ДИНАМИЧЕСКИХ ПЛЕЙЛИСТОВ КЛИЕНТОВ (Важно!)
+  # Направляет запросы /1234567890.m3u на фактическое местоположение файла.
+  from = "/:phone.m3u"
+  to = "/public/:phone.m3u"
+  status = 200
+  
+[[redirects]]
+  # 5. РЕДИРЕКТ ТЕСТОВЫХ ПЛЕЙЛИСТОВ КЛИЕНТОВ
+  from = "/test:phone.m3u"
+  to = "/public/test:phone.m3u"
   status = 200
 
-# 5. Иконки и общие ресурсы для прямого доступа (опционально, но полезно)
 [[redirects]]
-  from = "/assets/*"
-  to = "/assets/:splat"
+  # 6. РЕДИРЕКТ АДМИН-ПАНЕЛИ (для доступа к admin/index.html)
+  from = "/admin"
+  to = "/admin/index.html"
   status = 200
