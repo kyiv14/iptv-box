@@ -1,11 +1,1 @@
-[
-  {
-    "name": "Тест Клиент",
-    "phone": "9998887777",
-    "password": "123",
-    "key": "AABBCCDD11",
-    "paymentDate": "2025-01-01",
-    "months": "12",
-    "registration_date": "2025-01-01T00:00:00.000Z"
-  }
-]
+[{"name":"Тест Клиент","phone":"9998887777","password":"123","key":"AABBCCDD11","paymentDate":"2025-01-01","months":"12","registration_date":"2025-01-01T00:00:00.000Z"},{"name":"vvgvgv","phone":"0378880000","password":"11111111","key":"0000000000","paymentDate":"2025-10-03","months":"1","registration_date":"2025-10-03T17:16:59.076Z"}]
