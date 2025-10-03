@@ -31,7 +31,13 @@
             --orange-hover: #CC7700;
         }
 
-        /* ... (Стили остаются без изменений) ... */
+        /* Общие стили и фон */
+        html {
+            box-sizing: border-box;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
         
         body {
             font-family: 'Montserrat', sans-serif;
@@ -56,6 +62,7 @@
             align-items: center;
         }
         
+        /* АНИМАЦИЯ ПОЯВЛЕНИЙ ЭЛЕМЕНТОВ */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -66,6 +73,7 @@
             to { opacity: 1; transform: scale(1); }
         }
 
+        /* КОНТЕЙНЕР ОСНОВНОГО КОНТЕНТА (НАСТОЛЬНЫЙ) */
         .main-content {
             max-width: 700px;
             text-align: center;
@@ -75,8 +83,473 @@
             animation-delay: 0.2s;
         }
 
-        /* ... (Пропуск остальной части стилей, они не изменились) ... */
+        .main-content h1 {
+            font-size: 38px;
+            color: var(--system-blue);
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-content p {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px; 
+        }
         
+        /* =================================================== */
+        /* СТИЛИ БЛОКА "КАК ПОДКЛЮЧИТЬ IPTV" */
+        /* =================================================== */
+        .how-to-connect-block {
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+            animation-delay: 0.5s;
+            margin-top: 40px;
+            margin-bottom: 40px; 
+        }
+
+        .how-to-connect-block h2 {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .steps-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .step-item {
+            flex-basis: 200px; 
+            text-align: center;
+            padding: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .step-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            background: var(--system-blue); 
+            color: white;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: 900;
+            margin: 0 auto 15px;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+            transition: transform 0.3s ease;
+        }
+        
+        .step-item:hover .step-number {
+            transform: scale(1.1);
+        }
+
+        .step-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--system-blue);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .step-description {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .step-description a {
+             color: var(--system-blue);
+             text-decoration: none;
+             font-weight: 600;
+             transition: color 0.2s ease;
+        }
+        
+        .step-description a:hover {
+             color: var(--blue-hover);
+             text-decoration: underline;
+        }
+
+        /* =================================================== */
+        /* СТИЛИ БЛОКА "ГДЕ РАБОТАЕТ IPTV?" */
+        /* =================================================== */
+        .where-it-works-block {
+            max-width: 1000px;
+            width: 100%;
+            padding: 30px 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out forwards;
+            animation-delay: 0.8s;
+            margin-bottom: 40px;
+        }
+
+        .where-it-works-block h2 {
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .devices-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px 20px;
+            justify-items: center;
+            padding: 0 5%;
+        }
+
+        .device-item {
+            text-align: center;
+            padding: 10px;
+            transition: transform 0.3s ease;
+        }
+        
+        .device-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .device-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--system-blue); 
+            margin: 0 auto 10px;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+        }
+        
+        .device-icon img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+        }
+
+        .device-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            text-transform: uppercase;
+            margin-top: 5px;
+        }
+        
+        /* =================================================== */
+        /* СТИЛИ БЛОКА ПЛЕЙЛИСТА (ПОСЛЕ АВТОРИЗАЦИИ) */
+        /* =================================================== */
+        .post-auth-layout {
+            display: none;
+            justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+            gap: 30px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            animation: fadeInScale 0.6s ease-out forwards;
+        }
+
+        .playlist-info-page,
+        .payment-block {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            flex: 1; 
+            min-width: 300px;
+            text-align: center;
+        }
+        
+        .playlist-info-page { display: block; }
+        .payment-block { display: block; }
+        
+        .client-greeting {
+            color: var(--system-blue);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .playlist-info-page h2 {
+            color: #333;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .expiration-info {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--system-red);
+            margin-bottom: 25px;
+        }
+
+        .playlist-link-box {
+            background: var(--system-gray-light);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            word-break: break-all;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .playlist-info-actions {
+            display: flex;
+            gap: 12px;
+            flex-direction: column;
+            width: 100%;
+            max-width: 300px; 
+            margin: 0 auto;
+        }
+
+        .playlist-info-actions button {
+            width: 100%;
+            font-size: 20px; 
+            padding: 15px;
+            border-radius: 8px;
+            color: white; 
+            font-weight: 700;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .playlist-info-actions button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .playlist-info-actions button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        #copyLinkBtnPage:hover { background: var(--blue-hover) !important; }
+        #downloadLinkBtnPage:hover { background: var(--green-hover) !important; }
+
+         /* Стили для новой кнопки "Взять тест" */
+        #getTestBtn {
+            background: var(--system-orange);
+            box-shadow: 0 4px 10px rgba(255, 149, 0, 0.4);
+            font-size: 20px; 
+            padding: 15px;
+            border-radius: 8px;
+            color: white; 
+            font-weight: 700;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease; 
+            box-shadow: 0 4px 10px rgba(255, 149, 0, 0.4);
+            width: 100%;
+            max-width: 300px;
+            display: block;
+            margin: 0 auto 25px;
+        }
+        #getTestBtn:hover {
+            background: var(--orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 149, 0, 0.5);
+        }
+        #getTestBtn:active {
+             transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(255, 149, 0, 0.4);
+        }
+
+
+        /* СТИЛИ БЛОКА ОПЛАТЫ */
+        .payment-block h2 {
+            color: var(--system-green);
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .card-number-display {
+            background: var(--system-gray-light);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 0 auto 20px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #333;
+            max-width: 300px;
+            overflow-wrap: break-word; 
+        }
+
+        .payment-amount {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .submit-btn-modern {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            background: var(--system-blue); 
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            display: block;
+        }
+
+        .payment-btn {
+            background: var(--system-green) !important;
+            box-shadow: 0 4px 15px rgba(52, 199, 89, 0.4) !important;
+            margin-top: 10px; 
+        }
+        
+        .payment-btn:hover {
+            background: var(--green-hover) !important;
+            box-shadow: 0 8px 25px rgba(52, 199, 89, 0.6) !important;
+        }
+        
+        .copy-card-btn {
+            background: var(--system-blue);
+            color: white;
+            font-weight: 700;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+            font-size: 16px;
+            width: 100%; 
+            max-width: 300px;
+            margin: 0 auto; 
+            display: block; 
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4); 
+        }
+        
+        .copy-card-btn:hover {
+            background: var(--blue-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.5);
+        }
+        
+        .copy-card-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4);
+        }
+
+        /* Стили для модального окна тестового плейлиста */
+        #testPlaylistModal .modal-content {
+            max-width: 450px;
+        }
+        #testPlaylistModal h2 {
+            color: var(--system-orange);
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #testPlaylistLinkBox {
+            background: var(--system-gray-light);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            word-break: break-all;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: left; /* Для лучшей читаемости длинной ссылки */
+        }
+        #copyTestLinkBtn {
+            background: var(--system-orange);
+            box-shadow: 0 4px 10px rgba(255, 149, 0, 0.4);
+            font-weight: 700;
+            padding: 15px;
+            border-radius: 8px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            width: 100%;
+            max-width: 90%;
+            margin: 0 auto;
+            display: block;
+        }
+        #copyTestLinkBtn:hover {
+            background: var(--orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 149, 0, 0.5);
+        }
+        
+        /* Стили для модального окна истечения теста */
+        #expiredTestModal .modal-content {
+            max-width: 400px;
+            text-align: center;
+            border: 2px solid var(--system-red);
+        }
+        #expiredTestModal h2 {
+            color: var(--system-red);
+            font-size: 24px;
+        }
+        #expiredTestModal p {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        /* =================================================== */
+        /* АДАПТИВНОСТЬ */
+        /* =================================================== */
+        @media (max-width: 900px) {
+            .post-auth-layout { flex-direction: column; gap: 40px; }
+        }
+        @media (max-width: 768px) {
+            .devices-container { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 500px) {
+            .devices-container { grid-template-columns: 1fr; }
+            .main-content { margin-top: 80px; }
+            .main-content h1 { font-size: 32px; line-height: 1.2; }
+            .main-content p { font-size: 18px; }
+            .how-to-connect-block h2, .where-it-works-block h2 { font-size: 24px; }
+            .step-title, .device-name { font-size: 16px; }
+            .step-description { font-size: 15px; }
+            .steps-container { gap: 30px; }
+            .step-item { flex-basis: 90%; }
+            .auth-buttons-container { top: 10px; right: 10px; }
+            .admin-button-container { top: 10px; left: 10px; }
+            .client-greeting { font-size: 24px; }
+            .playlist-info-page h2 { font-size: 18px; }
+            .card-number-display { font-size: 20px; }
+            .playlist-info-actions, .copy-card-btn, .submit-btn-modern { max-width: 90%; }
+            #loginModal .input-group-modern, #registrationModal .input-group-modern { max-width: none; }
+        }
+
         /* =================================================== */
         /* КНОПКИ НАВИГАЦИИ */
         /* =================================================== */
@@ -261,7 +734,25 @@
         </div>
         
         <div id="channelListPage" style="display: none;">
+            <header>
+                <button id="backToMainBtn">Назад</button>
+                <span class="header-title">Плейлист 4030 каналов</span>
+            </header>
+            <div class="search-container">
+                <input type="text" class="search-input" id="main-search" placeholder="Поиск по всем каналам...">
             </div>
+            <div class="categories" id="categories"></div>
+            <div id="search-results"></div>
+
+            <div class="modal" id="channelModal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="closeChannelModal()">×</span>
+                    <h2 id="modal-title"></h2>
+                    <input type="text" class="modal-search" id="modal-search" placeholder="Поиск в этой категории...">
+                    <div id="channel-list"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -311,24 +802,25 @@
             <button class="submit-btn-modern payment-btn" onclick="closeModal('expiredTestModal'); document.getElementById('paymentBlock').scrollIntoView({ behavior: 'smooth' });">Перейти к оплате</button>
         </div>
     </div>
-    
     <script>
         // =================================================================
         // КОНФИГУРАЦИЯ (Извлечена из переменных окружения Netlify)
         // =================================================================
-        const BASE_URL = 'https://iptv-box.netlify.app/';
+        // ВАЖНО: Эти константы должны быть настроены как ENV-переменные в Netlify
+        const GITHUB_TOKEN_PART_1 = 'ghp_to27A4'; 
+        const GITHUB_TOKEN_PART_2 = 'Q0SrXyfBANG1'; 
+        const GITHUB_TOKEN_PART_3 = 'fxQvzyhhgwrn0rm1ra';
+
+        const BASE_URL = 'https://iptv-box.netlify.app/'; 
         const REPO_CONFIG = {
             owner: "kyiv14", repo: "moe-iptv", branch: "main",
             clientsFile: "public/clients.json",
-            // Путь к sample.m3u теперь использует настроенный редирект /sample.m3u
+            // Использует редирект /sample.m3u (см. netlify.toml)
             samplePlaylist: `${BASE_URL}sample.m3u`, 
             baseUrl: BASE_URL
         };
         
-        // --- КОНСТАНТЫ TELEGRAM и GITHUB --- (Должны быть в ENV Netlify)
-        const GITHUB_TOKEN_PART_1 = 'ghp_to27A4'; 
-        const GITHUB_TOKEN_PART_2 = 'Q0SrXyfBANG1'; 
-        const GITHUB_TOKEN_PART_3 = 'fxQvzyhhgwrn0rm1ra';
+        // --- КОНСТАНТЫ TELEGRAM ---
         const TELEGRAM_BOT_TOKEN = '8457795718:AAH60EaVEHhS2AM1YJy1CQUHt8NMN4d2z34';
         const TELEGRAM_CHAT_ID = '351875366';
         
@@ -355,6 +847,7 @@
             return `закончился ${Math.abs(diffDays)} дн. назад`;
         }
         
+        // НОВАЯ ФУНКЦИЯ: Проверка истечения тестового периода
         function isTestExpired(clientData) {
             if (!clientData || !clientData.test_end_date) {
                 return false; 
@@ -363,7 +856,6 @@
             today.setHours(0, 0, 0, 0);
             const testEndDate = new Date(clientData.test_end_date);
             testEndDate.setHours(0, 0, 0, 0);
-
             return today.getTime() >= testEndDate.getTime();
         }
 
@@ -428,10 +920,13 @@
             document.getElementById('clientNameGreeting').textContent = `Привет, ${currentClientData.name || 'Клиент'}!`;
             document.getElementById('expirationMessage').textContent = `Ваш тариф ${getExpirationDays(currentClientData.paymentDate, currentClientData.months)}.`;
             
+            // Здесь отображаем короткую ссылку
             document.getElementById('finalPlaylistLink').textContent = currentPlaylistResult.isgdUrl;
             
+            // КНОПКА КОПИРОВАТЬ: Копирует короткую ссылку
             document.getElementById('copyLinkBtnPage').onclick = (e) => copyToClipboard(currentPlaylistResult.isgdUrl, e);
             
+            // КНОПКА СКАЧАТЬ: Создаем прямую ссылку на СТАТИЧЕСКИЙ файл ОСНОВНОГО плейлиста для скачивания
             const downloadUrl = `${REPO_CONFIG.baseUrl}${currentClientData.phone}.m3u`;
             document.getElementById('downloadLinkBtnPage').onclick = () => {
                 window.open(downloadUrl, '_blank'); 
@@ -465,6 +960,7 @@
             const index = currentClients.findIndex(c => c.phone === client.phone);
             if (index === -1) throw new Error("Клиент не найден.");
             
+            // Обновляем данные клиента
             currentClients[index] = client;
             
             const response = await fetch(`https://api.github.com/repos/${REPO_CONFIG.owner}/${REPO_CONFIG.repo}/contents/${REPO_CONFIG.clientsFile}`, {
@@ -476,29 +972,41 @@
             return true;
         }
 
+        // =================================================================
+        // ФУНКЦИЯ: Создание короткой ссылки
+        // =================================================================
         async function createIsGdShortUrl(phone, isTest = false) {
             const cleanPhone = extractPhoneNumber(phone);
             const shortUrlAlias = isTest ? `test${cleanPhone}` : cleanPhone;
+            
             const longUrl = isTest 
+                            // Для тестового используем Netlify Function
                             ? `${REPO_CONFIG.baseUrl}api/playlist_link?phone=${cleanPhone}`
+                            // Для платного используем статическую ссылку
                             : `${REPO_CONFIG.baseUrl}${cleanPhone}.m3u`;
             
             try {
                 const apiUrl = `https://is.gd/create.php?format=json&url=${encodeURIComponent(longUrl)}&shorturl=${shortUrlAlias}`;
                 const response = await fetch(apiUrl);
                 const data = await response.json();
+                
                 return data.errorcode ? `https://is.gd/${shortUrlAlias}` : data.shorturl;
             } catch (error) { 
                 console.error('Ошибка создания is.gd ссылки:', error); 
                 return `https://is.gd/${shortUrlAlias}`;
             }
         }
+        // =================================================================
 
+        // =================================================================
+        // ФУНКЦИЯ: Создание тестового плейлиста (test{phone}.m3u)
+        // =================================================================
         async function createTestPlaylist(phone) {
             const cleanPhone = extractPhoneNumber(phone);
             const filename = `public/test${cleanPhone}.m3u`;
             const key = '0000000000'; 
             
+            // Использует редирект /sample.m3u
             const response = await fetch(REPO_CONFIG.samplePlaylist);
             if (!response.ok) throw new Error("Не удалось загрузить образец плейлиста sample.m3u.");
             
@@ -517,12 +1025,14 @@
             const isgdUrl = await createIsGdShortUrl(phone, true); 
             return { isgdUrl, m3uFilename: `test${cleanPhone}.m3u`, m3uContent: content };
         }
+        // =================================================================
 
         async function createPlaylist(phone, key) {
             const cleanPhone = extractPhoneNumber(phone);
             if (cleanPhone.length < 10) throw new Error("Номер должен содержать минимум 10 цифр.");
             
             const filename = `public/${cleanPhone}.m3u`;
+            // Использует редирект /sample.m3u
             const response = await fetch(REPO_CONFIG.samplePlaylist);
             if (!response.ok) throw new Error("Не удалось загрузить образец плейлиста sample.m3u.");
             
@@ -567,6 +1077,7 @@
             return true;
         }
         
+        // ОБНОВЛЕННАЯ ФУНКЦИЯ: Обработка нажатия кнопки "Взять тест"
         async function handleTestBtnClick() {
             if (!currentClientData) {
                 alert('Сначала войдите в систему.');
@@ -581,8 +1092,8 @@
             try {
                 if (!currentClientData.test_end_date) {
                     const today = new Date();
-                    const endDate = new Date(today.getTime() + (3 * 24 * 60 * 60 * 1000));
-                    currentClientData.test_end_date = endDate.toISOString().split('T')[0];
+                    const endDate = new Date(today.getTime() + (3 * 24 * 60 * 60 * 1000)); // + 3 дня
+                    currentClientData.test_end_date = endDate.toISOString().split('T')[0]; // Сохраняем дату в формате YYYY-MM-DD
                     
                     await updateClientData(currentClientData);
                 }
@@ -604,10 +1115,11 @@
                 console.error('Ошибка создания тестового плейлиста:', error);
             }
         }
+        // КОНЕЦ ОБНОВЛЕННОЙ ФУНКЦИИ
 
         document.addEventListener('DOMContentLoaded', () => {
             
-            window.handleTestBtnClick = handleTestBtnClick; 
+            window.handleTestBtnClick = handleTestBtnClick; // Добавляем функцию в глобальный scope
             
             document.getElementById('registrationForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -621,6 +1133,7 @@
                     showStatus("Проверьте поля: заполнены, пароли совпадают (мин. 6 симв.), телефон (мин. 10 цифр).", "error");
                     return;
                 }
+                // Добавляем дату регистрации
                 const newClient = { name, phone: cleanPhoneDigits, password, key: '0000000000', paymentDate: new Date().toISOString().split('T')[0], months: '1', registration_date: new Date().toISOString() };
                 try {
                     await sendRegistrationToTelegram(newClient);
@@ -655,7 +1168,7 @@
                 } catch (error) { showStatus(`❌ Ошибка входа: ${error.message}`, "error", 'loginStatusMessage'); console.error('Ошибка входа:', error); }
             });
             
-            // Переключение на страницу списка каналов
+            // --- НОВЫЙ КОД: Переключение на страницу списка каналов ---
             document.getElementById('showChannelListBtn').addEventListener('click', function() {
                 document.getElementById('mainPageContent').style.display = 'none';
                 document.getElementById('channelListPage').style.display = 'block';
@@ -677,11 +1190,11 @@
     
     <script>
         // =================================================================
-        // СКРИПТ ДЛЯ СТРАНИЦЫ СПИСКА КАНАЛОВ
+        // СКРИПТ ДЛЯ СТРАНИЦЫ СПИСКА КАНАЛОВ (из index01.html)
         // =================================================================
         (function() {
-            // Путь к moe.m3u теперь использует редирект /moe.m3u
-            const url = `${BASE_URL}moe.m3u`; 
+            // Использует редирект /moe.m3u (см. netlify.toml)
+            const url = `${BASE_URL}moe.m3u`;
             const categoriesEl = document.getElementById('categories');
             const searchResultsEl = document.getElementById('search-results');
             const channelModal = document.getElementById('channelModal');
@@ -718,7 +1231,7 @@
                             const channelData = { title, group: currentGroup, url: line };
                             dataByGroup[currentGroup].push(channelData);
                             allChannels.push(channelData);
-                            currentGroup = 'Без категории';
+                            currentGroup = 'Без категории'; // Reset group for next entry
                         }
                     }
                     allCategories = Object.keys(dataByGroup).sort();
