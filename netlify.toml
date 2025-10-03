@@ -1,0 +1,43 @@
+[build]
+  command = "echo 'Netlify build complete!'"
+  publish = "/"
+  functions = "netlify/functions"
+  
+# ===============================================
+# РЕДИРЕКТЫ ДЛЯ ПАПОК
+# ===============================================
+
+# 1. Основной домен ведет на клиентский интерфейс
+[[redirects]]
+  from = "/"
+  to = "/client/index.html"
+  status = 200
+
+# 2. /admin ведет на index.html внутри папки admin
+[[redirects]]
+  from = "/admin"
+  to = "/admin/index.html"
+  status = 200
+
+# 3. /api/playlist_link ведет на Netlify Function
+[[redirects]]
+  from = "/api/playlist_link"
+  to = "/.netlify/functions/playlist_link"
+  status = 200
+
+# 4. Прямой доступ к sample.m3u и moe.m3u из папки assets
+[[redirects]]
+  from = "/sample.m3u"
+  to = "/assets/sample.m3u"
+  status = 200
+
+[[redirects]]
+  from = "/moe.m3u"
+  to = "/assets/moe.m3u"
+  status = 200
+
+# 5. Иконки и общие ресурсы для прямого доступа (опционально, но полезно)
+[[redirects]]
+  from = "/assets/*"
+  to = "/assets/:splat"
+  status = 200
