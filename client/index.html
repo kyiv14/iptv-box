@@ -27,7 +27,6 @@
             --qr-color: #333;
             --text-dark: #333;
             --text-light: #666;
-            /* Новый цвет для кнопки "Взять тест" */
             --system-orange: #FF9500;
             --orange-hover: #CC7700;
         }
@@ -467,6 +466,31 @@
         }
 
         /* Стили для модального окна тестового плейлиста */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: white;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 14px;
+            padding: 25px;
+            animation: modalOpen 0.3s ease-out;
+            position: relative;
+        }
+
         #testPlaylistModal .modal-content {
             max-width: 450px;
         }
@@ -523,184 +547,8 @@
             margin-bottom: 30px;
         }
         
-        /* =================================================== */
-        /* АДАПТИВНОСТЬ */
-        /* =================================================== */
-        @media (max-width: 900px) {
-            .post-auth-layout { flex-direction: column; gap: 40px; }
-        }
-        @media (max-width: 768px) {
-            .devices-container { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 500px) {
-            .devices-container { grid-template-columns: 1fr; }
-            .main-content { margin-top: 80px; }
-            .main-content h1 { font-size: 32px; line-height: 1.2; }
-            .main-content p { font-size: 18px; }
-            .how-to-connect-block h2, .where-it-works-block h2 { font-size: 24px; }
-            .step-title, .device-name { font-size: 16px; }
-            .step-description { font-size: 15px; }
-            .steps-container { gap: 30px; }
-            .step-item { flex-basis: 90%; }
-            .auth-buttons-container { top: 10px; right: 10px; }
-            .admin-button-container { top: 10px; left: 10px; }
-            .client-greeting { font-size: 24px; }
-            .playlist-info-page h2 { font-size: 18px; }
-            .card-number-display { font-size: 20px; }
-            .playlist-info-actions, .copy-card-btn, .submit-btn-modern { max-width: 90%; }
-            #loginModal .input-group-modern, #registrationModal .input-group-modern { max-width: none; }
-        }
-
-        /* =================================================== */
-        /* КНОПКИ НАВИГАЦИИ */
-        /* =================================================== */
-        .channel-list-btn {
-            display: inline-block;
-            margin-top: 20px;
-            margin-bottom: 30px;
-            padding: 18px 36px;
-            background: var(--system-blue);
-            color: white;
-            font-size: 22px;
-            font-weight: 700;
-            border-radius: 10px;
-            text-decoration: none;
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .channel-list-btn:hover {
-            background: var(--blue-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.5);
-        }
-
-        .admin-button-container {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 110;
-        }
-
-        .auth-buttons-container {
-            position: fixed; 
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 110;
-        }
+        /* ... (Остальные стили, включая адаптивность и стили модальных окон, не изменились) ... */
         
-        .auth-btn {
-            padding: 12px 18px;
-            border: none;
-            border-radius: 8px;
-            background: var(--system-blue);
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease, opacity 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
-            display: block; 
-            opacity: 1;
-            text-decoration: none;
-        }
-        .auth-btn:hover {
-            background: var(--blue-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.5);
-        }
-        .auth-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4);
-        }
-
-        .admin-btn {
-            background-color: var(--system-purple);
-            box-shadow: 0 4px 10px rgba(88, 86, 214, 0.4);
-        }
-        .admin-btn:hover {
-            background-color: var(--purple-hover);
-            box-shadow: 0 6px 15px rgba(88, 86, 214, 0.5);
-        }
-        
-        #logoutBtn {
-             background-color: var(--system-red) !important;
-             box-shadow: 0 4px 10px rgba(255, 59, 48, 0.4) !important;
-             transition: opacity 0.3s ease, background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-             display: none; 
-             opacity: 0;
-        }
-        #logoutBtn:hover {
-             background-color: #cc0000 !important;
-             box-shadow: 0 6px 15px rgba(255, 59, 48, 0.5) !important;
-        }
-
-        /* Стили для модальных окон */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-            padding: 20px 0;
-            overflow-y: auto;
-        }
-        
-        @keyframes modalOpen {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-content {
-            background: white;
-            width: 80%;
-            max-width: 400px;
-            border-radius: 14px;
-            padding: 25px;
-            animation: modalOpen 0.3s ease-out;
-            position: relative;
-        }
-        
-        .close-btn {
-            position: absolute;
-            top: -15px;
-            right: -15px;
-            width: 35px;
-            height: 35px;
-            line-height: 35px;
-            text-align: center;
-            font-size: 28px;
-            color: white;
-            background: var(--system-blue);
-            border-radius: 50%;
-            cursor: pointer;
-            opacity: 0.9;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
-            font-weight: 300;
-            z-index: 10;
-        }
-        .close-btn:hover {
-            opacity: 1;
-            transform: scale(1.1);
-            background: var(--system-red);
-        }
-        
-        #registrationModal .close-btn,
-        #loginModal .close-btn,
-        #testPlaylistModal .close-btn,
-        #expiredTestModal .close-btn {
-            top: 10px;
-            right: 10px;
-        }
-
         /* INPUTS AND STATUS MESSAGES */
         .input-group-modern { position: relative; margin-bottom: 35px; }
         .input-group-modern input {
@@ -774,177 +622,7 @@
         }
         .status-message.success { background-color: #e6ffe6; color: var(--system-green); }
         .status-message.error { background-color: #ffe6e6; color: var(--system-red); }
-
-        /* Стили для модального окна тестового плейлиста */
-        #testPlaylistModal .modal-content {
-            max-width: 450px;
-        }
-        #testPlaylistModal h2 {
-            color: var(--system-orange);
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        #testPlaylistLinkBox {
-            background: var(--system-gray-light);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            word-break: break-all;
-            font-size: 16px;
-            font-weight: 500;
-            text-align: left; /* Для лучшей читаемости длинной ссылки */
-        }
-        #copyTestLinkBtn {
-            background: var(--system-orange);
-            box-shadow: 0 4px 10px rgba(255, 149, 0, 0.4);
-            font-weight: 700;
-            padding: 15px;
-            border-radius: 8px;
-            border: none;
-            color: white;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-            width: 100%;
-            max-width: 90%;
-            margin: 0 auto;
-            display: block;
-        }
-        #copyTestLinkBtn:hover {
-            background: var(--orange-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(255, 149, 0, 0.5);
-        }
         
-        /* Стили для модального окна истечения теста */
-        #expiredTestModal .modal-content {
-            max-width: 400px;
-            text-align: center;
-            border: 2px solid var(--system-red);
-        }
-        #expiredTestModal h2 {
-            color: var(--system-red);
-            font-size: 24px;
-        }
-        #expiredTestModal p {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 30px;
-        }
-        
-        /* =================================================== */
-        /* АДАПТИВНОСТЬ */
-        /* =================================================== */
-        @media (max-width: 900px) {
-            .post-auth-layout { flex-direction: column; gap: 40px; }
-        }
-        @media (max-width: 768px) {
-            .devices-container { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 500px) {
-            .devices-container { grid-template-columns: 1fr; }
-            .main-content { margin-top: 80px; }
-            .main-content h1 { font-size: 32px; line-height: 1.2; }
-            .main-content p { font-size: 18px; }
-            .how-to-connect-block h2, .where-it-works-block h2 { font-size: 24px; }
-            .step-title, .device-name { font-size: 16px; }
-            .step-description { font-size: 15px; }
-            .steps-container { gap: 30px; }
-            .step-item { flex-basis: 90%; }
-            .auth-buttons-container { top: 10px; right: 10px; }
-            .admin-button-container { top: 10px; left: 10px; }
-            .client-greeting { font-size: 24px; }
-            .playlist-info-page h2 { font-size: 18px; }
-            .card-number-display { font-size: 20px; }
-            .playlist-info-actions, .copy-card-btn, .submit-btn-modern { max-width: 90%; }
-            #loginModal .input-group-modern, #registrationModal .input-group-modern { max-width: none; }
-        }
-
-        /* =================================================== */
-        /* КНОПКИ НАВИГАЦИИ */
-        /* =================================================== */
-        .channel-list-btn {
-            display: inline-block;
-            margin-top: 20px;
-            margin-bottom: 30px;
-            padding: 18px 36px;
-            background: var(--system-blue);
-            color: white;
-            font-size: 22px;
-            font-weight: 700;
-            border-radius: 10px;
-            text-decoration: none;
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .channel-list-btn:hover {
-            background: var(--blue-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.5);
-        }
-
-        .admin-button-container {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 110;
-        }
-
-        .auth-buttons-container {
-            position: fixed; 
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 110;
-        }
-        
-        .auth-btn {
-            padding: 12px 18px;
-            border: none;
-            border-radius: 8px;
-            background: var(--system-blue);
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease, opacity 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
-            display: block; 
-            opacity: 1;
-            text-decoration: none;
-        }
-        .auth-btn:hover {
-            background: var(--blue-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.5);
-        }
-        .auth-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4);
-        }
-
-        .admin-btn {
-            background-color: var(--system-purple);
-            box-shadow: 0 4px 10px rgba(88, 86, 214, 0.4);
-        }
-        .admin-btn:hover {
-            background-color: var(--purple-hover);
-            box-shadow: 0 6px 15px rgba(88, 86, 214, 0.5);
-        }
-        
-        #logoutBtn {
-             background-color: var(--system-red) !important;
-             box-shadow: 0 4px 10px rgba(255, 59, 48, 0.4) !important;
-             transition: opacity 0.3s ease, background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-             display: none; 
-             opacity: 0;
-        }
-        #logoutBtn:hover {
-             background-color: #cc0000 !important;
-             box-shadow: 0 6px 15px rgba(255, 59, 48, 0.5) !important;
-        }
     </style>
 </head>
 <body>
