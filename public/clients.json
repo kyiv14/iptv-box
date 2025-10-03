@@ -1,0 +1,11 @@
+[
+  {
+    "name": "Тест Клиент",
+    "phone": "9998887777",
+    "password": "123",
+    "key": "AABBCCDD11",
+    "paymentDate": "2025-01-01",
+    "months": "12",
+    "registration_date": "2025-01-01T00:00:00.000Z"
+  }
+]
