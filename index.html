@@ -466,39 +466,7 @@
             box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4);
         }
 
-        /* =================================================== */
-        /* СТИЛИ ДЛЯ МОДАЛЬНЫХ ОКОН (ЛОГИН/РЕГИСТРАЦИЯ/ТЕСТ) */
-        /* =================================================== */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-            padding: 20px 0;
-            overflow-y: auto;
-        }
-        
-        @keyframes modalOpen {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-content {
-            background: white;
-            width: 80%;
-            max-width: 400px;
-            border-radius: 14px;
-            padding: 25px;
-            animation: modalOpen 0.3s ease-out;
-            position: relative;
-        }
-
+        /* Стили для модального окна тестового плейлиста */
         #testPlaylistModal .modal-content {
             max-width: 450px;
         }
@@ -555,6 +523,37 @@
             margin-bottom: 30px;
         }
         
+        /* Стили для модальных окон */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+        
+        @keyframes modalOpen {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 14px;
+            padding: 25px;
+            animation: modalOpen 0.3s ease-out;
+            position: relative;
+        }
+
         /* Стили для закрытия модалки */
         .close-btn {
             position: absolute;
@@ -580,8 +579,8 @@
             transform: scale(1.1);
             background: var(--system-red);
         }
-
-        /* INPUTS AND STATUS MESSAGES */
+        
+        /* Input styling for modals */
         .input-group-modern { position: relative; margin-bottom: 35px; }
         .input-group-modern input {
             width: 100%;
@@ -635,25 +634,6 @@
             margin: 0 auto;
             display: block;
         }
-        
-        .submit-btn-modern:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.6);
-        }
-        .submit-btn-modern:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 10px rgba(0, 123, 255, 0.4);
-        }
-        .status-message {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 15px;
-            display: none;
-        }
-        .status-message.success { background-color: #e6ffe6; color: var(--system-green); }
-        .status-message.error { background-color: #ffe6e6; color: var(--system-red); }
 
         /* =================================================== */
         /* СТИЛИ ДЛЯ СТРАНИЦЫ СПИСКА КАНАЛОВ (CSS) */
@@ -881,6 +861,30 @@
         /* =================================================== */
         /* СТИЛИ ДЛЯ КНОПОК НАВИГАЦИИ (ВОССТАНОВЛЕННЫЙ CSS) */
         /* =================================================== */
+        
+        /* Стили для кнопки "Список каналов" */
+        .channel-list-btn {
+            display: inline-block;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            padding: 18px 36px;
+            background: var(--system-blue);
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            border-radius: 10px;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .channel-list-btn:hover {
+            background: var(--blue-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.5);
+        }
+
         .auth-buttons-container {
             position: fixed; 
             top: 20px;
@@ -1484,7 +1488,6 @@
                     
                     // --- МОДИФИЦИРОВАНО: Сразу показываем страницу плейлиста ---
                     showPlaylistPage(); 
-                    // -----------------------------------------------------------
 
                 } catch (error) { showStatus(`❌ Ошибка: ${error.message}`, "error"); console.error('Ошибка регистрации:', error); }
             });
