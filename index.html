@@ -77,11 +77,14 @@
         /* КОНТЕЙНЕР ОСНОВНОГО КОНТЕНТА (НАСТОЛЬНЫЙ) */
         .main-content {
             max-width: 700px;
-            text-align: center;
+            text-align: center; 
             padding: 20px;
             opacity: 0;
             animation: fadeIn 0.8s ease-out forwards;
             animation-delay: 0.2s;
+            /* ИЗМЕНЕНИЕ ДЛЯ ЦЕНТРИРОВАНИЯ БЛОКА */
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .main-content h1 {
@@ -650,7 +653,7 @@
         #channelListPage { 
             width: 100%; 
             position: relative;
-            padding-top: 71px; /* Отступ для фиксированных элементов */
+            padding-top: 71px; 
         }
         
         /* Стили для Заголовка */
@@ -672,30 +675,12 @@
             font-weight: 700;
             color: var(--system-blue);
             margin: 0; 
+            display: block;
         }
         
-        /* Стили для Кнопки "Назад" */
+        /* Стили для Кнопки "Назад" (Удалено) */
         #backToMainBtn {
-            position: fixed;
-            top: 10px; /* Отступ сверху */
-            left: 20px; /* Отступ слева */
-            z-index: 102; /* Выше заголовка */
-            
-            padding: 10px 18px;
-            font-size: 16px;
-            font-weight: 600;
-            color: white;
-            background: var(--system-blue);
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            width: 90px;
-            text-align: center;
-        }
-        #backToMainBtn:hover {
-            background: var(--blue-hover);
-            transform: scale(1.05);
+            display: none; 
         }
 
         #channelListPage .search-container {
@@ -876,11 +861,8 @@
         @media (max-width: 600px) {
             .channel-list-title {
                 font-size: 1.2rem;
-            }
-            #backToMainBtn { 
-                font-size: 14px; 
-                padding: 8px 12px;
-                width: auto;
+                height: 55px;
+                line-height: 55px;
             }
             #channelListPage {
                 padding-top: 55px; /* Корректировка отступа для мобильных */
@@ -891,11 +873,11 @@
             
             #channelListPage .search-container {
                 padding: 1rem;
-                top: 55px; /* Корректировка sticky top на мобильных */
+                top: 55px; /* Прилипает ниже заголовка */
             }
             
             #channelListPage .modal-content {
-                margin-top: 100px; /* Меньший отступ на мобильных */
+                margin-top: 100px; /* Сохраняем отступ для модалки, чтобы она была ниже поиска */
             }
         }
         
@@ -919,6 +901,10 @@
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
+            /* ИЗМЕНЕНИЕ ДЛЯ ЦЕНТРИРОВАНИЯ КНОПКИ */
+            margin-left: auto;
+            margin-right: auto;
+            display: block; 
         }
         .channel-list-btn:hover {
             background: var(--blue-hover);
@@ -1032,7 +1018,7 @@
             <div class="main-content" id="preAuthContent">
                 <h1>Доступное IPTV — 4000 каналов IPTV в отличном качестве с архивом.</h1>
                 <p>Современный сервис IPTV телевидения, который дает возможность смотреть каналы в Full HD и Ultra HD качестве. Плейлист IPTV телевидения насчитывает 4000 IPTV каналов. Присоединяйтесь к нам и желаем Вам приятного просмотра</p>
-                <button class="channel-list-btn" id="showChannelListBtn">Список каналов</button>
+                <button class="channel-list-btn" onclick="window.location.href='https://iptv-spisok.netlify.app/'">Список каналов</button>
             </div>
 
             <div class="how-to-connect-block" id="howToConnectBlock">
@@ -1114,7 +1100,6 @@
         <div id="channelListPage" style="display: none;">
             
             <h1 class="channel-list-title">Плейлист 4030 каналов</h1>
-            <button id="backToMainBtn">Назад</button>
             
             <div class="search-container">
                 <input type="text" class="search-input" id="main-search" placeholder="Поиск по всем каналам...">
@@ -1560,19 +1545,15 @@
                 } catch (error) { showStatus(`❌ Ошибка входа: ${error.message}`, "error", 'loginStatusMessage'); console.error('Ошибка входа:', error); }
             });
             
-            // --- НОВЫЙ КОД: Переключение на страницу списка каналов ---
+            // --- УДАЛЕНА ЛОГИКА ПЕРЕКЛЮЧЕНИЯ НА ВНУТРЕННЮЮ СТРАНИЦУ СПИСКА КАНАЛОВ ---
+            /*
             document.getElementById('showChannelListBtn').addEventListener('click', function() {
                 document.getElementById('mainPageContent').style.display = 'none';
                 document.getElementById('channelListPage').style.display = 'block';
                 document.getElementById('authButtonsContainer').style.display = 'none';
                 document.querySelector('.admin-button-container').style.display = 'none';
             });
-            document.getElementById('backToMainBtn').addEventListener('click', function() {
-                document.getElementById('channelListPage').style.display = 'none';
-                document.getElementById('mainPageContent').style.display = 'block';
-                document.getElementById('authButtonsContainer').style.display = 'flex';
-                document.querySelector('.admin-button-container').style.display = 'block';
-            });
+            */
         });
 
         window.openModal = openModal;
@@ -1582,8 +1563,9 @@
     
     <script>
         // =================================================================
-        // СКРИПТ ДЛЯ СТРАНИЦЫ СПИСКА КАНАЛОВ (из index01.html)
+        // СКРИПТ ДЛЯ СТРАНИЦЫ СПИСКА КАНАЛОВ (теперь не используется для перехода)
         // =================================================================
+        // Код оставлен для случая, если пользователь захочет вернуть внутреннюю логику
         (function() {
             const url = `${BASE_URL}moe.m3u`;
             const categoriesEl = document.getElementById('categories');
@@ -1626,10 +1608,10 @@
                         }
                     }
                     allCategories = Object.keys(dataByGroup).sort();
-                    renderCategories();
+                    // renderCategories(); // Не вызываем, так как страница не отображается
                 } catch (error) {
                     console.error("Failed to fetch and parse M3U file:", error);
-                    categoriesEl.innerHTML = "<p>Не удалось загрузить список каналов. Попробуйте позже.</p>";
+                    // categoriesEl.innerHTML = "<p>Не удалось загрузить список каналов. Попробуйте позже.</p>"; // Не отображаем
                 }
             }
 
@@ -1667,43 +1649,7 @@
                 };
             }
 
-            mainSearch.oninput = function() {
-                const searchTerm = this.value.toLowerCase().trim();
-                if (searchTerm === '') { renderCategories(); return; }
-                categoriesEl.style.display = 'none';
-                searchResultsEl.innerHTML = '';
-                const foundChannels = allChannels.filter(channel => channel.title.toLowerCase().includes(searchTerm));
-                if (foundChannels.length === 0) {
-                    searchResultsEl.innerHTML = '<div style="padding: 2rem; text-align: center; font-size: 1.2rem; color: var(--text-light);">Каналы не найдены</div>';
-                    return;
-                }
-                foundChannels.forEach(channel => {
-                    const el = document.createElement('div');
-                    el.className = 'channel-result';
-                    el.innerHTML = `<div>${channel.title}</div><div class="channel-category">${channel.group}</div>`;
-                    el.onclick = () => {
-                        openChannelModal(channel.group);
-                        setTimeout(() => {
-                            channelList.querySelectorAll('.channel').forEach(ch => {
-                                if (ch.textContent === channel.title) {
-                                    ch.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                    ch.style.backgroundColor = 'rgba(0, 123, 255, 0.1)';
-                                    setTimeout(() => ch.style.backgroundColor = '', 2000);
-                                }
-                            });
-                        }, 100);
-                    };
-                    searchResultsEl.appendChild(el);
-                });
-            };
-
-            window.onclick = function(e) {
-                if (e.target === channelModal) closeChannelModal();
-            };
-            window.onkeydown = function(e) {
-                if (e.key === "Escape" && channelModal.style.display === 'flex') closeChannelModal();
-            }
-            fetchAndParseM3U();
+            // fetchAndParseM3U(); // Удален вызов загрузки при старте DOM
         })();
     </script>
 </body>
