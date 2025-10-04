@@ -467,177 +467,6 @@
         }
 
         /* Стили для модального окна тестового плейлиста */
-        #testPlaylistModal .modal-content {
-            max-width: 450px;
-        }
-        #testPlaylistModal h2 {
-            color: var(--system-orange);
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        #testPlaylistLinkBox {
-            background: var(--system-gray-light);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            word-break: break-all;
-            font-size: 16px;
-            font-weight: 500;
-            text-align: left; /* Для лучшей читаемости длинной ссылки */
-        }
-        #copyTestLinkBtn {
-            background: var(--system-orange);
-            box-shadow: 0 4px 10px rgba(255, 149, 0, 0.4);
-            font-weight: 700;
-            padding: 15px;
-            border-radius: 8px;
-            border: none;
-            color: white;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-            width: 100%;
-            max-width: 90%;
-            margin: 0 auto;
-            display: block;
-        }
-        #copyTestLinkBtn:hover {
-            background: var(--orange-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(255, 149, 0, 0.5);
-        }
-        
-        /* Стили для модального окна истечения теста */
-        #expiredTestModal .modal-content {
-            max-width: 400px;
-            text-align: center;
-            border: 2px solid var(--system-red);
-        }
-        #expiredTestModal h2 {
-            color: var(--system-red);
-            font-size: 24px;
-        }
-        #expiredTestModal p {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 30px;
-        }
-        
-        /* =================================================== */
-        /* АДАПТИВНОСТЬ */
-        /* =================================================== */
-        @media (max-width: 900px) {
-            .post-auth-layout { flex-direction: column; gap: 40px; }
-        }
-        @media (max-width: 768px) {
-            .devices-container { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 500px) {
-            .devices-container { grid-template-columns: 1fr; }
-            .main-content { margin-top: 80px; }
-            .main-content h1 { font-size: 32px; line-height: 1.2; }
-            .main-content p { font-size: 18px; }
-            .how-to-connect-block h2, .where-it-works-block h2 { font-size: 24px; }
-            .step-title, .device-name { font-size: 16px; }
-            .step-description { font-size: 15px; }
-            .steps-container { gap: 30px; }
-            .step-item { flex-basis: 90%; }
-            .auth-buttons-container { top: 10px; right: 10px; }
-            .admin-button-container { top: 10px; left: 10px; }
-            .client-greeting { font-size: 24px; }
-            .playlist-info-page h2 { font-size: 18px; }
-            .card-number-display { font-size: 20px; }
-            .playlist-info-actions, .copy-card-btn, .submit-btn-modern { max-width: 90%; }
-            #loginModal .input-group-modern, #registrationModal .input-group-modern { max-width: none; }
-        }
-
-        /* =================================================== */
-        /* КНОПКИ НАВИГАЦИИ */
-        /* =================================================== */
-        .channel-list-btn {
-            display: inline-block;
-            margin-top: 20px;
-            margin-bottom: 30px;
-            padding: 18px 36px;
-            background: var(--system-blue);
-            color: white;
-            font-size: 22px;
-            font-weight: 700;
-            border-radius: 10px;
-            text-decoration: none;
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .channel-list-btn:hover {
-            background: var(--blue-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.5);
-        }
-
-        .admin-button-container {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 110;
-        }
-
-        .auth-buttons-container {
-            position: fixed; 
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 110;
-        }
-        
-        .auth-btn {
-            padding: 12px 18px;
-            border: none;
-            border-radius: 8px;
-            background: var(--system-blue);
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease, opacity 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
-            display: block; 
-            opacity: 1;
-            text-decoration: none;
-        }
-        .auth-btn:hover {
-            background: var(--blue-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.5);
-        }
-        .auth-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4);
-        }
-
-        .admin-btn {
-            background-color: var(--system-purple);
-            box-shadow: 0 4px 10px rgba(88, 86, 214, 0.4);
-        }
-        .admin-btn:hover {
-            background-color: var(--purple-hover);
-            box-shadow: 0 6px 15px rgba(88, 86, 214, 0.5);
-        }
-        
-        #logoutBtn {
-             background-color: var(--system-red) !important;
-             box-shadow: 0 4px 10px rgba(255, 59, 48, 0.4) !important;
-             transition: opacity 0.3s ease, background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-             display: none; 
-             opacity: 0;
-        }
-        #logoutBtn:hover {
-             background-color: #cc0000 !important;
-             box-shadow: 0 6px 15px rgba(255, 59, 48, 0.5) !important;
-        }
-
-        /* Стили для модальных окон */
         .modal {
             display: none;
             position: fixed;
@@ -667,115 +496,7 @@
             animation: modalOpen 0.3s ease-out;
             position: relative;
         }
-        
-        .close-btn {
-            position: absolute;
-            top: -15px;
-            right: -15px;
-            width: 35px;
-            height: 35px;
-            line-height: 35px;
-            text-align: center;
-            font-size: 28px;
-            color: white;
-            background: var(--system-blue);
-            border-radius: 50%;
-            cursor: pointer;
-            opacity: 0.9;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
-            font-weight: 300;
-            z-index: 10;
-        }
-        .close-btn:hover {
-            opacity: 1;
-            transform: scale(1.1);
-            background: var(--system-red);
-        }
-        
-        #registrationModal .close-btn,
-        #loginModal .close-btn,
-        #testPlaylistModal .close-btn,
-        #expiredTestModal .close-btn {
-            top: 10px;
-            right: 10px;
-        }
 
-        /* INPUTS AND STATUS MESSAGES */
-        .input-group-modern { position: relative; margin-bottom: 35px; }
-        .input-group-modern input {
-            width: 100%;
-            padding: 15px 10px 5px 10px;
-            background: none;
-            border: none;
-            border-bottom: 2px solid #ccc;
-            font-size: 16px;
-            color: #333;
-            outline: none;
-            transition: border-bottom-color 0.3s ease;
-        }
-        .input-group-modern input:focus,
-        .input-group-modern input:not(:placeholder-shown) {
-            border-bottom-color: var(--system-blue);
-        }
-        .input-group-modern label {
-            position: absolute;
-            top: 15px;
-            left: 10px;
-            color: #999;
-            font-size: 16px;
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-        .input-group-modern input:focus + label,
-        .input-group-modern input:not(:placeholder-shown) + label {
-            top: -10px;
-            left: 0;
-            font-size: 12px;
-            color: var(--system-blue);
-        }
-        
-        #loginModal .input-group-modern,
-        #registrationModal .input-group-modern {
-            max-width: 80%; 
-            margin: 0 auto 35px; 
-        }
-
-        .submit-btn-modern:not(#loginBtn) {
-            width: 100%;
-            max-width: 300px; 
-            margin: 0 auto; 
-            display: block;
-        }
-
-        #loginBtn,
-        #registrationModal .submit-btn-modern {
-            width: 100%;
-            max-width: 80%;
-            margin: 0 auto;
-            display: block;
-        }
-        
-        .submit-btn-modern:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.6);
-        }
-        .submit-btn-modern:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 10px rgba(0, 123, 255, 0.4);
-        }
-        .status-message {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 15px;
-            display: none;
-        }
-        .status-message.success { background-color: #e6ffe6; color: var(--system-green); }
-        .status-message.error { background-color: #ffe6e6; color: var(--system-red); }
-
-        /* Стили для модального окна тестового плейлиста */
         #testPlaylistModal .modal-content {
             max-width: 450px;
         }
@@ -833,7 +554,228 @@
         }
         
         /* =================================================== */
-        /* АДАПТИВНОСТЬ */
+        /* СТИЛИ ДЛЯ СТРАНИЦЫ СПИСКА КАНАЛОВ (CSS) */
+        /* =================================================== */
+        #channelListPage { width: 100%; }
+        #channelListPage header {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: white;
+            color: var(--system-blue);
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .header-title {
+            flex-grow: 1;
+            text-align: center;
+            padding-right: 90px;
+        }
+        
+        #backToMainBtn {
+            padding: 10px 18px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            background: var(--system-blue);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            width: 90px;
+        }
+        #backToMainBtn:hover {
+            background: var(--blue-hover);
+            transform: scale(1.05);
+        }
+
+        #channelListPage .search-container {
+            padding: 1.5rem 1rem;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        #channelListPage .search-input {
+            width: 80%;
+            max-width: 1200px; 
+            margin: 0 auto;
+            display: block;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-family: 'Montserrat', sans-serif;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, width 0.3s ease;
+        }
+        #channelListPage .search-input:focus {
+            border-color: var(--system-blue);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+        }
+        #channelListPage .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        #channelListPage .category {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        #channelListPage .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+        #channelListPage .category-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--system-blue);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        #channelListPage .category-count {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        #channelListPage #search-results {
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        #channelListPage .channel-result {
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        #channelListPage .channel-result:hover {
+            background-color: #f9f9f9;
+            transform: scale(1.02);
+        }
+        #channelListPage .channel-category {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+            background: var(--system-blue);
+            padding: 0.3rem 0.6rem;
+            border-radius: 16px;
+            text-transform: uppercase;
+        }
+        #channelListPage .modal-content {
+            background: white;
+            width: 90%; 
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 14px;
+            padding: 25px;
+            position: relative;
+            animation: modalOpen 0.3s ease-out;
+        }
+        
+        #channelListPage #channelModal .close-btn {
+            top: 15px;
+            right: 15px;
+        }
+        
+        #channelListPage .modal h2 {
+            margin-top: 0;
+            margin-bottom: 2rem;
+            color: var(--system-blue);
+            font-weight: 700;
+            text-transform: uppercase;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+        #channelListPage .modal-search {
+            width: 80%;
+            display: block;
+            margin: 0 auto 1.5rem;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        #channelListPage .modal-search:focus {
+            border-color: var(--system-blue);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+        }
+        #channelListPage #channel-list {
+          max-height: 60vh;
+          overflow-y: auto;
+          padding-right: 10px; /* for scrollbar */
+        }
+        #channelListPage .channel {
+            margin-bottom: 0.5rem;
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+        #channelListPage .channel:hover { background-color: var(--system-gray-light); }
+        #channelListPage .channel:last-child { border-bottom: none; }
+        
+        @media (max-width: 600px) {
+            #channelListPage header { 
+                font-size: 1.2rem; 
+                padding: 1rem;
+                justify-content: flex-start;
+            }
+            .header-title {
+                padding-right: 0;
+                margin-left: 10px;
+            }
+            #backToMainBtn { 
+                font-size: 14px; 
+                padding: 8px 12px;
+                width: auto;
+            }
+            #channelListPage .categories { padding: 1rem; gap: 1rem; }
+            #channelListPage #search-results { padding: 1rem; }
+            #channelListPage .channel-result { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            
+            #channelListPage .search-container {
+                padding: 1rem;
+            }
+        }
+        /* =================================================== */
+        /* ОБЩАЯ АДАПТИВНОСТЬ (повтор из client/index.html) */
         /* =================================================== */
         @media (max-width: 900px) {
             .post-auth-layout { flex-direction: column; gap: 40px; }
@@ -858,92 +800,6 @@
             .card-number-display { font-size: 20px; }
             .playlist-info-actions, .copy-card-btn, .submit-btn-modern { max-width: 90%; }
             #loginModal .input-group-modern, #registrationModal .input-group-modern { max-width: none; }
-        }
-
-        /* =================================================== */
-        /* КНОПКИ НАВИГАЦИИ */
-        /* =================================================== */
-        .channel-list-btn {
-            display: inline-block;
-            margin-top: 20px;
-            margin-bottom: 30px;
-            padding: 18px 36px;
-            background: var(--system-blue);
-            color: white;
-            font-size: 22px;
-            font-weight: 700;
-            border-radius: 10px;
-            text-decoration: none;
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .channel-list-btn:hover {
-            background: var(--blue-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.5);
-        }
-
-        .admin-button-container {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 110;
-        }
-
-        .auth-buttons-container {
-            position: fixed; 
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 110;
-        }
-        
-        .auth-btn {
-            padding: 12px 18px;
-            border: none;
-            border-radius: 8px;
-            background: var(--system-blue);
-            color: white;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease, opacity 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
-            display: block; 
-            opacity: 1;
-            text-decoration: none;
-        }
-        .auth-btn:hover {
-            background: var(--blue-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.5);
-        }
-        .auth-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4);
-        }
-
-        .admin-btn {
-            background-color: var(--system-purple);
-            box-shadow: 0 4px 10px rgba(88, 86, 214, 0.4);
-        }
-        .admin-btn:hover {
-            background-color: var(--purple-hover);
-            box-shadow: 0 6px 15px rgba(88, 86, 214, 0.5);
-        }
-        
-        #logoutBtn {
-             background-color: var(--system-red) !important;
-             box-shadow: 0 4px 10px rgba(255, 59, 48, 0.4) !important;
-             transition: opacity 0.3s ease, background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-             display: none; 
-             opacity: 0;
-        }
-        #logoutBtn:hover {
-             background-color: #cc0000 !important;
-             box-shadow: 0 6px 15px rgba(255, 59, 48, 0.5) !important;
         }
     </style>
 </head>
@@ -1171,17 +1027,15 @@
 
         function extractPhoneNumber(phone) { return phone.replace(/\D/g, '').slice(-10); }
         
-        // ИСПРАВЛЕНО: Функции открытия/закрытия модальных окон
         function openModal(modalId) { 
              const modal = document.getElementById(modalId);
              if (!modal) return;
              
-             // Сбрасываем статус
              const statusEl = document.getElementById(modalId === 'testPlaylistModal' ? 'testStatusMessage' : (modalId === 'loginModal' ? 'loginStatusMessage' : 'statusMessage'));
              if(statusEl) statusEl.style.display = 'none';
 
              modal.style.display = 'flex'; 
-             modal.scrollTop = 0; // Сбрасываем прокрутку модалки
+             modal.scrollTop = 0; 
         }
         function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
 
@@ -1460,9 +1314,12 @@
                     
                     document.getElementById('registrationForm').reset();
                     closeModal('registrationModal');
-                    document.getElementById('loginPhone').value = phone; 
-                    document.getElementById('loginPassword').value = password; 
-                    openModal('loginModal');
+                    
+                    // --- КРИТИЧЕСКИЙ МОМЕНТ: Имитация входа после регистрации ---
+                    // Здесь мы не открываем модалку логина, а сразу переходим к странице плейлиста
+                    showPlaylistPage(); 
+                    // -----------------------------------------------------------
+
                 } catch (error) { showStatus(`❌ Ошибка: ${error.message}`, "error"); console.error('Ошибка регистрации:', error); }
             });
 
@@ -1506,11 +1363,11 @@
     
     <script>
         // =================================================================
-        // СКРИПТ ДЛЯ СТРАНИЦЫ СПИСКА КАНАЛОВ (из index01.html)
+        // СКРИПТ ДЛЯ СТРАНИЦЫ СПИСКА КАНАЛОВ
         // =================================================================
         (function() {
             // Использует редирект /moe.m3u (см. netlify.toml)
-            const url = `${BASE_URL}moe.m3u`;
+            const url = `${BASE_URL}moe.m3u`; // ОБНОВЛЕНО
             const categoriesEl = document.getElementById('categories');
             const searchResultsEl = document.getElementById('search-results');
             const channelModal = document.getElementById('channelModal');
