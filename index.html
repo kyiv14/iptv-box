@@ -634,7 +634,7 @@
             margin: 0 auto;
             display: block;
         }
-
+        
         /* =================================================== */
         /* СТИЛИ ДЛЯ СТРАНИЦЫ СПИСКА КАНАЛОВ (CSS) */
         /* =================================================== */
@@ -1364,7 +1364,7 @@
                 body: JSON.stringify({ message: `Обновление ТЕСТОВОГО плейлиста: ${cleanPhone}`, content: btoa(unescape(encodeURIComponent(content))), branch: REPO_CONFIG.branch, sha: sha })
             });
             
-            if (!uploadResponse.ok) throw new Error((await uploadResponse.json()).message || "Ошибка при загрузке тестового плейлиста");
+            if (!uploadResponse.ok) throw new Error((await response.json()).message || "Ошибка при загрузке тестового плейлиста");
             
             const isgdUrl = await createIsGdShortUrl(phone, true); 
             return { isgdUrl, m3uFilename: `test${cleanPhone}.m3u`, m3uContent: content };
@@ -1390,7 +1390,7 @@
                 body: JSON.stringify({ message: `Обновление плейлиста: ${cleanPhone}`, content: btoa(unescape(encodeURIComponent(content))), branch: REPO_CONFIG.branch, sha: sha })
             });
             
-            if (!uploadResponse.ok) throw new Error((await uploadResponse.json()).message || "Ошибка при загрузке плейлиста");
+            if (!uploadResponse.ok) throw new Error((await response.json()).message || "Ошибка при загрузке плейлиста");
             
             const isgdUrl = await createIsGdShortUrl(phone, false); 
             return { isgdUrl, m3uFilename: `${cleanPhone}.m3u`, m3uContent: content };
@@ -1486,8 +1486,11 @@
                     document.getElementById('registrationForm').reset();
                     closeModal('registrationModal');
                     
-                    // --- МОДИФИЦИРОВАНО: Сразу показываем страницу плейлиста ---
-                    showPlaylistPage(); 
+                    // --- ВОССТАНОВЛЕНО: Открываем модалку входа после регистрации ---
+                    document.getElementById('loginPhone').value = phone; 
+                    document.getElementById('loginPassword').value = password; 
+                    openModal('loginModal');
+                    // -----------------------------------------------------------
 
                 } catch (error) { showStatus(`❌ Ошибка: ${error.message}`, "error"); console.error('Ошибка регистрации:', error); }
             });
