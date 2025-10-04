@@ -489,7 +489,7 @@
         }
         
         /* ОБЩИЙ СТИЛЬ ДЛЯ КНОПОК ТЕСТОВОЙ МОДАЛКИ (Перейти и Копировать) */
-        #copyTestLinkBtn, #goToTestLinkBtn {
+        #goToTestLinkBtn {
             font-size: 20px; 
             padding: 15px; 
             font-weight: 700;
@@ -505,19 +505,10 @@
             box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4); 
         }
 
-        #copyTestLinkBtn {
-             background: var(--system-blue);
-        }
         #goToTestLinkBtn {
              background: var(--system-orange);
              box-shadow: 0 4px 10px rgba(255, 149, 0, 0.4);
              margin-top: 15px;
-        }
-
-        #copyTestLinkBtn:hover {
-            background: var(--blue-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.5);
         }
 
         #goToTestLinkBtn:hover {
@@ -1088,7 +1079,7 @@
                     <div class="card-number-display" id="cardNumberDisplay">5168752084846610</div>
                     <button class="copy-card-btn" onclick="copyToClipboard('5168752084846610', event)">Копировать номер</button>
                     <p style="color: #666; margin-top: 20px; margin-bottom: 25px; font-size: 14px;">Скопируйте номер карты, чтобы оплатить подписку.</p>
-                    <button class="submit-btn-modern payment-btn" onclick="alert('Перейти к платежной системе!')">Перейти к оплате</button>
+                    <button class="submit-btn-modern payment-btn" onclick="window.open('https://www.privat24.ua/send/32xla', '_blank')">Перейти к оплате</button>
                 </div>
             </div>
         </div>
@@ -1387,7 +1378,7 @@
                 body: JSON.stringify({ message: `Обновление ТЕСТОВОГО плейлиста: ${cleanPhone}`, content: btoa(unescape(encodeURIComponent(content))), branch: REPO_CONFIG.branch, sha: sha })
             });
             
-            if (!uploadResponse.ok) throw new Error((await uploadResponse.json()).message || "Ошибка при загрузке тестового плейлиста");
+            if (!uploadResponse.ok) throw new Error((await response.json()).message || "Ошибка при загрузке тестового плейлиста");
             
             const isgdUrl = await createIsGdShortUrl(phone, true); 
             return { isgdUrl, m3uFilename: `test${cleanPhone}.m3u`, m3uContent: content };
@@ -1413,7 +1404,7 @@
                 body: JSON.stringify({ message: `Обновление плейлиста: ${cleanPhone}`, content: btoa(unescape(encodeURIComponent(content))), branch: REPO_CONFIG.branch, sha: sha })
             });
             
-            if (!uploadResponse.ok) throw new Error((await uploadResponse.json()).message || "Ошибка при загрузке плейлиста");
+            if (!uploadResponse.ok) throw new Error((await response.json()).message || "Ошибка при загрузке плейлиста");
             
             const isgdUrl = await createIsGdShortUrl(phone, false); 
             return { isgdUrl, m3uFilename: `${cleanPhone}.m3u`, m3uContent: content };
@@ -1458,8 +1449,9 @@
             try {
                 if (!currentClientData.test_end_date) {
                     const today = new Date();
-                    const endDate = new Date(today.getTime() + (3 * 24 * 60 * 60 * 1000)); // + 3 дня
-                    currentClientData.test_end_date = endDate.toISOString().split('T')[0]; // Сохраняем дату в формате YYYY-MM-DD
+                    // ИСПРАВЛЕНО: Устанавливаем тестовый период в 24 часа (1 день)
+                    const endDate = new Date(today.getTime() + (24 * 60 * 60 * 1000)); 
+                    currentClientData.test_end_date = endDate.toISOString().split('T')[0]; 
                     
                     await updateClientData(currentClientData);
                 }
@@ -1566,7 +1558,6 @@
         // СКРИПТ ДЛЯ СТРАНИЦЫ СПИСКА КАНАЛОВ (из index01.html)
         // =================================================================
         (function() {
-            // Использует редирект /moe.m3u (см. netlify.toml)
             const url = `${BASE_URL}moe.m3u`;
             const categoriesEl = document.getElementById('categories');
             const searchResultsEl = document.getElementById('search-results');
