@@ -506,7 +506,7 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(255, 149, 0, 0.5);
         }
-        
+
         /* Стили для модального окна истечения теста */
         #expiredTestModal .modal-content {
             max-width: 400px;
@@ -639,6 +639,8 @@
         /* СТИЛИ ДЛЯ СТРАНИЦЫ СПИСКА КАНАЛОВ (CSS) */
         /* =================================================== */
         #channelListPage { width: 100%; }
+        
+        /* Стили для Header ListPage */
         #channelListPage header {
             display: flex;
             align-items: center;
@@ -650,6 +652,9 @@
             font-weight: 700;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             border-bottom: 1px solid #e5e5e5;
+            position: sticky; /* Добавлено */
+            top: 0; /* Добавлено */
+            z-index: 101; /* Добавлено */
         }
 
         .header-title {
@@ -1364,7 +1369,7 @@
                 body: JSON.stringify({ message: `Обновление ТЕСТОВОГО плейлиста: ${cleanPhone}`, content: btoa(unescape(encodeURIComponent(content))), branch: REPO_CONFIG.branch, sha: sha })
             });
             
-            if (!uploadResponse.ok) throw new Error((await response.json()).message || "Ошибка при загрузке тестового плейлиста");
+            if (!uploadResponse.ok) throw new Error((await uploadResponse.json()).message || "Ошибка при загрузке тестового плейлиста");
             
             const isgdUrl = await createIsGdShortUrl(phone, true); 
             return { isgdUrl, m3uFilename: `test${cleanPhone}.m3u`, m3uContent: content };
@@ -1390,7 +1395,7 @@
                 body: JSON.stringify({ message: `Обновление плейлиста: ${cleanPhone}`, content: btoa(unescape(encodeURIComponent(content))), branch: REPO_CONFIG.branch, sha: sha })
             });
             
-            if (!uploadResponse.ok) throw new Error((await response.json()).message || "Ошибка при загрузке плейлиста");
+            if (!uploadResponse.ok) throw new Error((await uploadResponse.json()).message || "Ошибка при загрузке плейлиста");
             
             const isgdUrl = await createIsGdShortUrl(phone, false); 
             return { isgdUrl, m3uFilename: `${cleanPhone}.m3u`, m3uContent: content };
