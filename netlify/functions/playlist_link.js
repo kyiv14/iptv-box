@@ -9,7 +9,7 @@
  * - CLIENTS_FILE_PATH (должно быть 'public/clients.json')
  * - BASE_URL (должно быть 'https://iptv-box.netlify.app/') 
  * - TEST_DURATION_MS (напр., 300000 для 5 минут)
- * - TEST_PLAYLIST_URL (напр., https://raw.githubusercontent.com/kyiv14/iptv-client/main/playlist.m3u8)
+ * - TEST_PLAYLIST_URL (напр., https://raw.githubusercontent.com/kyiv14/iptv-box/main/playlist.m3u8)
  */
 
 const GITHUB_OWNER = process.env.GITHUB_OWNER;
@@ -109,4 +109,5 @@ exports.handler = async function(event, context) {
         console.error("Критическая ошибка при обработке плейлиста:", error);
         return { statusCode: 500, body: 'Внутренняя ошибка сервера при скачивании.' };
     }
+
 }
