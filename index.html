@@ -13,7 +13,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
     
     <link rel="icon" href="https://iptv-box.netlify.app/client/icon.ico">
-    <link rel="icon" href="https://iptv-box.netlify.app/icon.ico"> <style>
+    
+    <style>
         :root {
             --system-blue: #007AFF;
             --system-gray-light: #F2F2F7;
@@ -311,6 +312,7 @@
             word-break: break-all;
             font-size: 16px;
             font-weight: 500;
+            text-align: left; /* Для лучшей читаемости длинной ссылки */
         }
         
         .playlist-info-actions {
@@ -1147,9 +1149,8 @@
             <span class="close-btn" onclick="closeModal('testPlaylistModal')">&times;</span>
             <h2>Ваш тестовый плейлист</h2>
             <p style="color: #666; margin-bottom: 20px; font-size: 16px;">Скопируйте ссылку ниже и используйте ее для подключения к IPTV-сервису.</p>
-            <div class="playlist-link-box" id="testPlaylistLinkBox"></div>
+            <div class="playlist-link-box" id="testPlaylistLinkBox" style="cursor: pointer;"></div>
             <button class="submit-btn-modern" id="goToTestLinkBtn" style="background: var(--system-orange); margin-top: 15px;">Перейти по ссылке</button>
-            <button id="copyTestLinkBtn" onclick="return false;" style="background: var(--system-blue); margin-top: 10px;">Копировать ссылку</button>
             <div id="testStatusMessage" class="status-message"></div>
         </div>
     </div>
@@ -1386,7 +1387,7 @@
                 body: JSON.stringify({ message: `Обновление ТЕСТОВОГО плейлиста: ${cleanPhone}`, content: btoa(unescape(encodeURIComponent(content))), branch: REPO_CONFIG.branch, sha: sha })
             });
             
-            if (!uploadResponse.ok) throw new Error((await response.json()).message || "Ошибка при загрузке тестового плейлиста");
+            if (!uploadResponse.ok) throw new Error((await uploadResponse.json()).message || "Ошибка при загрузке тестового плейлиста");
             
             const isgdUrl = await createIsGdShortUrl(phone, true); 
             return { isgdUrl, m3uFilename: `test${cleanPhone}.m3u`, m3uContent: content };
@@ -1412,7 +1413,7 @@
                 body: JSON.stringify({ message: `Обновление плейлиста: ${cleanPhone}`, content: btoa(unescape(encodeURIComponent(content))), branch: REPO_CONFIG.branch, sha: sha })
             });
             
-            if (!uploadResponse.ok) throw new Error((await response.json()).message || "Ошибка при загрузке плейлиста");
+            if (!uploadResponse.ok) throw new Error((await uploadResponse.json()).message || "Ошибка при загрузке плейлиста");
             
             const isgdUrl = await createIsGdShortUrl(phone, false); 
             return { isgdUrl, m3uFilename: `${cleanPhone}.m3u`, m3uContent: content };
@@ -1466,13 +1467,14 @@
                 currentTestPlaylistResult = await createTestPlaylist(currentClientData.phone);
                 
                 const linkBox = document.getElementById('testPlaylistLinkBox');
-                const copyBtn = document.getElementById('copyTestLinkBtn');
-                const goToBtn = document.getElementById('goToTestLinkBtn'); // Получаем новую кнопку
+                const goToBtn = document.getElementById('goToTestLinkBtn'); 
                 
                 linkBox.textContent = currentTestPlaylistResult.isgdUrl;
                 
-                // Назначаем действия кнопкам
-                copyBtn.onclick = (e) => copyToClipboard(currentTestPlaylistResult.isgdUrl, e);
+                // Назначаем действие копирования на сам блок текста
+                linkBox.onclick = () => copyToClipboard(linkBox.textContent); 
+
+                // Назначаем действие кнопке "Перейти"
                 goToBtn.onclick = () => window.open(currentTestPlaylistResult.isgdUrl, '_blank'); 
 
                 document.getElementById('testStatusMessage').style.display = 'none';
