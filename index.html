@@ -787,18 +787,36 @@
             border-radius: 16px;
             text-transform: uppercase;
         }
+        /* --- ИЗМЕНЕНИЯ ЗДЕСЬ --- */
+        #channelListPage .modal {
+            /* Переопределяем модалку для страницы списка каналов */
+            position: fixed;
+            top: 0; /* Изменяем на 0 */
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 100; /* Должен быть ниже sticky шапки (101) и поиска (100) на основной странице, но выше на странице каналов */
+            justify-content: center;
+            align-items: flex-start; /* Изменяем на flex-start, чтобы контент начинался сверху */
+            padding: 0; /* Убираем вертикальный паддинг */
+            overflow-y: auto;
+        }
         #channelListPage .modal-content {
             background: white;
             width: 90%; 
             max-width: 600px;
-            max-height: 90vh;
+            max-height: 90vh; /* Убираем max-height, если хотим, чтобы оно было ниже */
             overflow-y: auto;
             border-radius: 14px;
             padding: 25px;
             position: relative;
             animation: modalOpen 0.3s ease-out;
+            margin-top: 150px; /* Добавляем отступ, чтобы модалка была ниже шапки и поиска. Это примерное значение. */
+            margin-bottom: 20px; /* Добавляем отступ снизу */
         }
-        
+        /* --- КОНЕЦ ИЗМЕНЕНИЙ --- */
+
         #channelListPage #channelModal .close-btn {
             top: 15px;
             right: 15px;
@@ -870,6 +888,12 @@
             #channelListPage .search-container {
                 padding: 1rem;
             }
+            
+            /* --- ИЗМЕНЕНИЯ ЗДЕСЬ (АДАПТИВНОСТЬ) --- */
+            #channelListPage .modal-content {
+                margin-top: 100px; /* Меньший отступ на мобильных */
+            }
+            /* --- КОНЕЦ ИЗМЕНЕНИЙ --- */
         }
         
         /* =================================================== */
