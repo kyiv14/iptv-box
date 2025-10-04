@@ -466,7 +466,9 @@
             box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4);
         }
 
-        /* Стили для модального окна тестового плейлиста */
+        /* =================================================== */
+        /* СТИЛИ ДЛЯ МОДАЛЬНЫХ ОКОН (ЛОГИН/РЕГИСТРАЦИЯ/ТЕСТ) */
+        /* =================================================== */
         .modal {
             display: none;
             position: fixed;
@@ -553,6 +555,106 @@
             margin-bottom: 30px;
         }
         
+        /* Стили для закрытия модалки */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            font-size: 28px;
+            color: white;
+            background: var(--system-blue);
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0.9;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+            font-weight: 300;
+            z-index: 10;
+        }
+        .close-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            background: var(--system-red);
+        }
+
+        /* INPUTS AND STATUS MESSAGES */
+        .input-group-modern { position: relative; margin-bottom: 35px; }
+        .input-group-modern input {
+            width: 100%;
+            padding: 15px 10px 5px 10px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid #ccc;
+            font-size: 16px;
+            color: #333;
+            outline: none;
+            transition: border-bottom-color 0.3s ease;
+        }
+        .input-group-modern input:focus,
+        .input-group-modern input:not(:placeholder-shown) {
+            border-bottom-color: var(--system-blue);
+        }
+        .input-group-modern label {
+            position: absolute;
+            top: 15px;
+            left: 10px;
+            color: #999;
+            font-size: 16px;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+        .input-group-modern input:focus + label,
+        .input-group-modern input:not(:placeholder-shown) + label {
+            top: -10px;
+            left: 0;
+            font-size: 12px;
+            color: var(--system-blue);
+        }
+        
+        #loginModal .input-group-modern,
+        #registrationModal .input-group-modern {
+            max-width: 80%; 
+            margin: 0 auto 35px; 
+        }
+
+        .submit-btn-modern:not(#loginBtn) {
+            width: 100%;
+            max-width: 300px; 
+            margin: 0 auto; 
+            display: block;
+        }
+
+        #loginBtn,
+        #registrationModal .submit-btn-modern {
+            width: 100%;
+            max-width: 80%;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .submit-btn-modern:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.6);
+        }
+        .submit-btn-modern:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(0, 123, 255, 0.4);
+        }
+        .status-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 15px;
+            display: none;
+        }
+        .status-message.success { background-color: #e6ffe6; color: var(--system-green); }
+        .status-message.error { background-color: #ffe6e6; color: var(--system-red); }
+
         /* =================================================== */
         /* СТИЛИ ДЛЯ СТРАНИЦЫ СПИСКА КАНАЛОВ (CSS) */
         /* =================================================== */
