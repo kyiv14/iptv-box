@@ -489,8 +489,8 @@
         
         /* ОБЩИЙ СТИЛЬ ДЛЯ КНОПОК ТЕСТОВОЙ МОДАЛКИ (Перейти и Копировать) */
         #copyTestLinkBtn, #goToTestLinkBtn {
-            font-size: 20px; /* Размер шрифта как у кнопки Перейти */
-            padding: 15px; /* Высота как у кнопки Перейти */
+            font-size: 20px; 
+            padding: 15px; 
             font-weight: 700;
             border-radius: 8px;
             border: none;
@@ -499,7 +499,7 @@
             transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
             width: 100%;
             max-width: 90%;
-            margin: 5px auto; /* Небольшой отступ */
+            margin: 5px auto; 
             display: block;
             box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4); 
         }
@@ -524,8 +524,6 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(255, 149, 0, 0.5);
         }
-
-
         /* Стили для модального окна истечения теста */
         #expiredTestModal .modal-content {
             max-width: 400px;
@@ -1389,7 +1387,7 @@
                 body: JSON.stringify({ message: `Обновление ТЕСТОВОГО плейлиста: ${cleanPhone}`, content: btoa(unescape(encodeURIComponent(content))), branch: REPO_CONFIG.branch, sha: sha })
             });
             
-            if (!uploadResponse.ok) throw new Error((await uploadResponse.json()).message || "Ошибка при загрузке тестового плейлиста");
+            if (!uploadResponse.ok) throw new Error((await response.json()).message || "Ошибка при загрузке тестового плейлиста");
             
             const isgdUrl = await createIsGdShortUrl(phone, true); 
             return { isgdUrl, m3uFilename: `test${cleanPhone}.m3u`, m3uContent: content };
