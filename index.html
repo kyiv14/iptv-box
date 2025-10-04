@@ -650,38 +650,37 @@
         #channelListPage { 
             width: 100%; 
             position: relative;
-            padding-top: 71px; /* Отступ для sticky элементов */
+            padding-top: 71px; /* Отступ для фиксированных элементов */
         }
         
-        /* Стили для Заголовка и Кнопки "Назад" (Теперь они фиксированные/стиковые) */
-        .channel-list-header-group {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 1.5rem;
-            background: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border-bottom: 1px solid #e5e5e5;
-            position: fixed; /* Изменяем на fixed */
+        /* Стили для Заголовка */
+        .channel-list-title {
+            position: fixed;
             top: 0; 
             left: 0;
             right: 0;
+            height: 71px;
+            line-height: 71px;
+            padding: 0 1.5rem;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-bottom: 1px solid #e5e5e5;
             z-index: 101; 
-            width: 100%;
-            max-width: 100%; /* Гарантируем полную ширину */
-        }
-
-        .channel-list-title {
-            flex-grow: 1;
+            
             text-align: center;
             font-size: 2rem;
             font-weight: 700;
             color: var(--system-blue);
             margin: 0; 
-            transform: translateX(-45px); /* Смещение, чтобы центрировать относительно оставшегося места */
         }
         
+        /* Стили для Кнопки "Назад" */
         #backToMainBtn {
+            position: fixed;
+            top: 10px; /* Отступ сверху */
+            left: 20px; /* Отступ слева */
+            z-index: 102; /* Выше заголовка */
+            
             padding: 10px 18px;
             font-size: 16px;
             font-weight: 600;
@@ -691,9 +690,8 @@
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
-            flex-shrink: 0;
             width: 90px;
-            display: block;
+            text-align: center;
         }
         #backToMainBtn:hover {
             background: var(--blue-hover);
@@ -876,12 +874,8 @@
         #channelListPage .channel:last-child { border-bottom: none; }
         
         @media (max-width: 600px) {
-            .channel-list-header-group { 
-                padding: 1rem;
-            }
             .channel-list-title {
                 font-size: 1.2rem;
-                transform: translateX(-45px); /* Сохраняем смещение */
             }
             #backToMainBtn { 
                 font-size: 14px; 
@@ -1119,10 +1113,8 @@
         
         <div id="channelListPage" style="display: none;">
             
-            <div class="channel-list-header-group">
-                <button id="backToMainBtn">Назад</button>
-                <h1 class="channel-list-title">Плейлист 4030 каналов</h1>
-            </div>
+            <h1 class="channel-list-title">Плейлист 4030 каналов</h1>
+            <button id="backToMainBtn">Назад</button>
             
             <div class="search-container">
                 <input type="text" class="search-input" id="main-search" placeholder="Поиск по всем каналам...">
