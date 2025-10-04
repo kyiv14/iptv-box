@@ -653,19 +653,48 @@
             padding-top: 0; /* Убираем отступ, так как нет фиксированных элементов сверху */
         }
         
-        /* УДАЛЯЕМ СТИЛИ ДЛЯ ЗАГОЛОВКА И КНОПКИ */
-        .channel-list-title,
+        /* НОВЫЕ СТИЛИ ДЛЯ ЗАГОЛОВКА И КНОПКИ НАЗАД */
+        .channel-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: white;
+            position: sticky;
+            top: 0; 
+            z-index: 101; /* Выше чем search-container */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .channel-list-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--system-blue);
+            margin: 0;
+        }
         #backToMainBtn {
-             display: none; /* Гарантируем, что они не будут отображаться */
+            background: var(--system-blue);
+            color: white;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+        }
+        #backToMainBtn:hover {
+            background: var(--blue-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4);
         }
 
         #channelListPage .search-container {
             padding: 1.5rem 1rem;
-            background: white;
+            background: #f8f8f8; /* Немного светлее, чтобы отделить от шапки */
             position: sticky;
-            top: 0; /* Теперь прилипает к самому верху */
+            top: 70px; /* Смещаем вниз под шапку */
             z-index: 100;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-bottom: 1px solid #eee;
         }
         #channelListPage .search-input {
             width: 80%;
@@ -839,14 +868,25 @@
             #channelListPage {
                 padding-top: 0; /* Убираем отступ для мобильных */
             }
+            .channel-list-header {
+                padding: 0.75rem 1rem;
+            }
+            .channel-list-title {
+                font-size: 1.2rem;
+            }
+            #backToMainBtn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+            #channelListPage .search-container {
+                padding: 1rem;
+                top: 59px; /* Смещаем вниз под шапку */
+            }
+            
             #channelListPage .categories { padding: 1rem; gap: 1rem; }
             #channelListPage #search-results { padding: 1rem; }
             #channelListPage .channel-result { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
             
-            #channelListPage .search-container {
-                padding: 1rem;
-                top: 0; /* Прилипает к самому верху */
-            }
             
             #channelListPage .modal-content {
                 margin-top: 100px; /* Сохраняем отступ для модалки, чтобы она была ниже поиска */
@@ -1067,6 +1107,12 @@
         
         <div id="channelListPage" style="display: none;">
             
+            <!-- Добавляем заголовок и кнопку "Назад" -->
+            <div class="channel-list-header">
+                <h1 class="channel-list-title">Плейлист 4030 каналов</h1>
+                <button id="backToMainBtn" onclick="backToMainPage()">Назад</button>
+            </div>
+            
             <div class="search-container">
                 <input type="text" class="search-input" id="main-search" placeholder="Поиск по всем каналам...">
             </div>
@@ -1268,6 +1314,15 @@
                 window.open(downloadUrl, '_blank'); 
             };
         }
+        
+        // --- НОВАЯ ФУНКЦИЯ ДЛЯ КНОПКИ НАЗАД ---
+        function backToMainPage() {
+            document.getElementById('channelListPage').style.display = 'none';
+            document.getElementById('mainPageContent').style.display = 'block';
+            document.getElementById('authButtonsContainer').style.display = 'flex';
+            document.querySelector('.admin-button-container').style.display = 'block';
+        }
+        // ------------------------------------
 
         async function getFileSha(filename) {
             const apiUrl = `https://api.github.com/repos/${REPO_CONFIG.owner}/${REPO_CONFIG.repo}/contents/${filename}`;
@@ -1460,6 +1515,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             
             window.handleTestBtnClick = handleTestBtnClick; // Добавляем функцию в глобальный scope
+            window.backToMainPage = backToMainPage; // Добавляем функцию Назад в глобальный scope
             
             document.getElementById('registrationForm').addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -1518,13 +1574,8 @@
                 document.getElementById('authButtonsContainer').style.display = 'none';
                 document.querySelector('.admin-button-container').style.display = 'none';
             });
-            // ! Кнопка "Назад" удалена из HTML. Теперь нет привязки к ней.
-            // document.getElementById('backToMainBtn').addEventListener('click', function() {
-            //     document.getElementById('channelListPage').style.display = 'none';
-            //     document.getElementById('mainPageContent').style.display = 'block';
-            //     document.getElementById('authButtonsContainer').style.display = 'flex';
-            //     document.querySelector('.admin-button-container').style.display = 'block';
-            // });
+            
+            // Кнопка "Назад" теперь привязана к функции backToMainPage
         });
 
         window.openModal = openModal;
