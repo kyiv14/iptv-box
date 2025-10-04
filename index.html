@@ -466,9 +466,83 @@
             box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4);
         }
 
-        /* =================================================== */
-        /* СТИЛИ ДЛЯ МОДАЛЬНЫХ ОКОН (ЛОГИН/РЕГИСТРАЦИЯ/ТЕСТ) */
-        /* =================================================== */
+        /* Стили для модального окна тестового плейлиста */
+        #testPlaylistModal .modal-content {
+            max-width: 450px;
+        }
+        #testPlaylistModal h2 {
+            color: var(--system-orange);
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #testPlaylistLinkBox {
+            background: var(--system-gray-light);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            word-break: break-all;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: left; /* Для лучшей читаемости длинной ссылки */
+        }
+        
+        /* ОБЩИЙ СТИЛЬ ДЛЯ КНОПОК ТЕСТОВОЙ МОДАЛКИ (Перейти и Копировать) */
+        #copyTestLinkBtn, #goToTestLinkBtn {
+            font-size: 20px; /* Размер шрифта как у кнопки Перейти */
+            padding: 15px; /* Высота как у кнопки Перейти */
+            font-weight: 700;
+            border-radius: 8px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            width: 100%;
+            max-width: 90%;
+            margin: 5px auto; /* Небольшой отступ */
+            display: block;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4); 
+        }
+
+        #copyTestLinkBtn {
+             background: var(--system-blue);
+        }
+        #goToTestLinkBtn {
+             background: var(--system-orange);
+             box-shadow: 0 4px 10px rgba(255, 149, 0, 0.4);
+             margin-top: 15px;
+        }
+
+        #copyTestLinkBtn:hover {
+            background: var(--blue-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.5);
+        }
+
+        #goToTestLinkBtn:hover {
+            background: var(--orange-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 149, 0, 0.5);
+        }
+
+
+        /* Стили для модального окна истечения теста */
+        #expiredTestModal .modal-content {
+            max-width: 400px;
+            text-align: center;
+            border: 2px solid var(--system-red);
+        }
+        #expiredTestModal h2 {
+            color: var(--system-red);
+            font-size: 24px;
+        }
+        #expiredTestModal p {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        /* Стили для модальных окон */
         .modal {
             display: none;
             position: fixed;
@@ -499,62 +573,6 @@
             position: relative;
         }
 
-        #testPlaylistModal .modal-content {
-            max-width: 450px;
-        }
-        #testPlaylistModal h2 {
-            color: var(--system-orange);
-            font-weight: 700;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        #testPlaylistLinkBox {
-            background: var(--system-gray-light);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            word-break: break-all;
-            font-size: 16px;
-            font-weight: 500;
-            text-align: left; /* Для лучшей читаемости длинной ссылки */
-        }
-        #copyTestLinkBtn {
-            background: var(--system-orange);
-            box-shadow: 0 4px 10px rgba(255, 149, 0, 0.4);
-            font-weight: 700;
-            padding: 15px;
-            border-radius: 8px;
-            border: none;
-            color: white;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-            width: 100%;
-            max-width: 90%;
-            margin: 0 auto;
-            display: block;
-        }
-        #copyTestLinkBtn:hover {
-            background: var(--orange-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(255, 149, 0, 0.5);
-        }
-        
-        /* Стили для модального окна истечения теста */
-        #expiredTestModal .modal-content {
-            max-width: 400px;
-            text-align: center;
-            border: 2px solid var(--system-red);
-        }
-        #expiredTestModal h2 {
-            color: var(--system-red);
-            font-size: 24px;
-        }
-        #expiredTestModal p {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 30px;
-        }
-        
         /* Стили для закрытия модалки */
         .close-btn {
             position: absolute;
@@ -635,7 +653,7 @@
             margin: 0 auto;
             display: block;
         }
-
+        
         /* =================================================== */
         /* СТИЛИ ДЛЯ СТРАНИЦЫ СПИСКА КАНАЛОВ (CSS) */
         /* =================================================== */
@@ -1133,8 +1151,8 @@
             <h2>Ваш тестовый плейлист</h2>
             <p style="color: #666; margin-bottom: 20px; font-size: 16px;">Скопируйте ссылку ниже и используйте ее для подключения к IPTV-сервису.</p>
             <div class="playlist-link-box" id="testPlaylistLinkBox"></div>
-            <button class="submit-btn-modern" id="goToTestLinkBtn" style="background: var(--system-blue); margin-top: 15px;">Перейти</button>
-            <button id="copyTestLinkBtn" onclick="return false;" style="margin-top: 10px;">Копировать ссылку</button>
+            <button class="submit-btn-modern" id="goToTestLinkBtn" style="background: var(--system-orange); margin-top: 15px;">Перейти</button>
+            <button id="copyTestLinkBtn" onclick="return false;" style="background: var(--system-blue); margin-top: 10px;">Копировать ссылку</button>
             <div id="testStatusMessage" class="status-message"></div>
         </div>
     </div>
@@ -1371,7 +1389,7 @@
                 body: JSON.stringify({ message: `Обновление ТЕСТОВОГО плейлиста: ${cleanPhone}`, content: btoa(unescape(encodeURIComponent(content))), branch: REPO_CONFIG.branch, sha: sha })
             });
             
-            if (!uploadResponse.ok) throw new Error((await response.json()).message || "Ошибка при загрузке тестового плейлиста");
+            if (!uploadResponse.ok) throw new Error((await uploadResponse.json()).message || "Ошибка при загрузке тестового плейлиста");
             
             const isgdUrl = await createIsGdShortUrl(phone, true); 
             return { isgdUrl, m3uFilename: `test${cleanPhone}.m3u`, m3uContent: content };
@@ -1452,11 +1470,12 @@
                 
                 const linkBox = document.getElementById('testPlaylistLinkBox');
                 const copyBtn = document.getElementById('copyTestLinkBtn');
-                const goToBtn = document.getElementById('goToTestLinkBtn'); // Добавлено
+                const goToBtn = document.getElementById('goToTestLinkBtn'); // Получаем новую кнопку
                 
                 linkBox.textContent = currentTestPlaylistResult.isgdUrl;
+                
+                // Назначаем действия кнопкам
                 copyBtn.onclick = (e) => copyToClipboard(currentTestPlaylistResult.isgdUrl, e);
-                // Назначаем действие кнопке "Перейти"
                 goToBtn.onclick = () => window.open(currentTestPlaylistResult.isgdUrl, '_blank'); 
 
                 document.getElementById('testStatusMessage').style.display = 'none';
