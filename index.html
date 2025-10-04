@@ -135,10 +135,19 @@
         }
 
         .step-item {
-            flex-basis: 200px; 
+            /* Убеждаемся, что при широком экране два элемента поместятся в ряд */
+            flex-basis: 40%; 
+            min-width: 200px;
             text-align: center;
             padding: 10px;
             transition: transform 0.3s ease;
+        }
+        
+        @media (max-width: 500px) {
+            .step-item {
+                /* На мобильных устройствах элементы будут в одном столбце */
+                flex-basis: 90%;
+            }
         }
         
         .step-item:hover {
@@ -232,16 +241,17 @@
             transform: translateY(-5px);
         }
 
+        /* ИЗМЕНЕНИЕ: Убираем круги, фон и тени вокруг иконок */
         .device-icon {
             display: flex;
             justify-content: center;
             align-items: center;
             width: 80px;
             height: 80px;
-            border-radius: 50%;
-            background: var(--system-blue); 
-            margin: 0 auto 10px;
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+            border-radius: 0; /* Удаляем скругление */
+            background: none; /* Удаляем фон */
+            margin: 0 auto 10px; /* Сохраняем нижний отступ */
+            box-shadow: none; /* Удаляем тень */
         }
         
         .device-icon img {
@@ -901,7 +911,7 @@
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            /* ИЗМЕНЕНИЕ ДЛЯ ЦЕНТРИРОВАНИЯ КНОПКИ */
+            /* ЦЕНТРИРОВАНИЕ КНОПКИ */
             margin-left: auto;
             margin-right: auto;
             display: block; 
@@ -1024,21 +1034,25 @@
             <div class="how-to-connect-block" id="howToConnectBlock">
                 <h2>Как подключить IPTV</h2>
                 <div class="steps-container">
+                    <!-- ПУНКТ 1: Регистрация (Ранее 1) -->
                     <div class="step-item">
                         <div class="step-number">1</div><div class="step-title">Регистрация</div>
                         <div class="step-description">Нажмите кнопку Регистрация в правом верхнем углу</div>
                     </div>
+                    <!-- ПУНКТ 2: Плейлист (Ранее 3) -->
                     <div class="step-item">
-                        <div class="step-number">2</div><div class="step-title">Оплата</div>
-                        <div class="step-description">Оплатить подписку</div>
-                    </div>
-                    <div class="step-item">
-                        <div class="step-number">3</div><div class="step-title">Плейлист</div>
+                        <div class="step-number">2</div><div class="step-title">Плейлист</div>
                         <div class="step-description">Скачать плейлист</div>
                     </div>
+                    <!-- ПУНКТ 3: Загрузка (Ранее 4) -->
                     <div class="step-item">
-                        <div class="step-number">4</div><div class="step-title">Загрузка</div>
+                        <div class="step-number">3</div><div class="step-title">Загрузка</div>
                         <div class="step-description">Загрузить плейлист в Ваше устройство</div>
+                    </div>
+                    <!-- ПУНКТ 4: Оплата (Ранее 2) -->
+                    <div class="step-item">
+                        <div class="step-number">4</div><div class="step-title">Оплата</div>
+                        <div class="step-description">Оплатить подписку</div>
                     </div>
                 </div>
             </div>
