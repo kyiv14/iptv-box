@@ -649,33 +649,36 @@
         /* =================================================== */
         #channelListPage { 
             width: 100%; 
-            position: relative; /* Для позиционирования заголовка и кнопки */
+            position: relative;
+            padding-top: 71px; /* Отступ для sticky элементов */
         }
         
-        /* Стили для Заголовка и Кнопки "Назад" */
-        .channel-list-top-bar {
+        /* Стили для Заголовка и Кнопки "Назад" (Теперь они фиксированные/стиковые) */
+        .channel-list-header-group {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             padding: 1rem 1.5rem;
             background: white;
-            color: var(--system-blue);
-            text-align: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             border-bottom: 1px solid #e5e5e5;
-            position: sticky; 
+            position: fixed; /* Изменяем на fixed */
             top: 0; 
+            left: 0;
+            right: 0;
             z-index: 101; 
             width: 100%;
+            max-width: 100%; /* Гарантируем полную ширину */
         }
 
         .channel-list-title {
             flex-grow: 1;
             text-align: center;
-            padding-right: 90px;
             font-size: 2rem;
             font-weight: 700;
             color: var(--system-blue);
-            margin: 0; /* Удаляем стандартные отступы h1/h2 */
+            margin: 0; 
+            transform: translateX(-45px); /* Смещение, чтобы центрировать относительно оставшегося места */
         }
         
         #backToMainBtn {
@@ -701,7 +704,7 @@
             padding: 1.5rem 1rem;
             background: white;
             position: sticky;
-            top: 71px; /* Смещение ниже нового sticky заголовка (примерно 71px) */
+            top: 71px; /* Смещение ниже фиксированного заголовка */
             z-index: 100;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
@@ -873,20 +876,20 @@
         #channelListPage .channel:last-child { border-bottom: none; }
         
         @media (max-width: 600px) {
-            .channel-list-top-bar { 
-                font-size: 1.2rem; 
+            .channel-list-header-group { 
                 padding: 1rem;
-                justify-content: space-between;
             }
             .channel-list-title {
-                padding-right: 0;
-                margin-left: 10px;
                 font-size: 1.2rem;
+                transform: translateX(-45px); /* Сохраняем смещение */
             }
             #backToMainBtn { 
                 font-size: 14px; 
                 padding: 8px 12px;
                 width: auto;
+            }
+            #channelListPage {
+                padding-top: 55px; /* Корректировка отступа для мобильных */
             }
             #channelListPage .categories { padding: 1rem; gap: 1rem; }
             #channelListPage #search-results { padding: 1rem; }
@@ -1116,7 +1119,7 @@
         
         <div id="channelListPage" style="display: none;">
             
-            <div class="channel-list-top-bar">
+            <div class="channel-list-header-group">
                 <button id="backToMainBtn">Назад</button>
                 <h1 class="channel-list-title">Плейлист 4030 каналов</h1>
             </div>
