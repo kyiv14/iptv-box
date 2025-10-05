@@ -1034,22 +1034,18 @@
             <div class="how-to-connect-block" id="howToConnectBlock">
                 <h2>Как подключить IPTV</h2>
                 <div class="steps-container">
-                    <!-- ПУНКТ 1: Регистрация (Ранее 1) -->
                     <div class="step-item">
                         <div class="step-number">1</div><div class="step-title">Регистрация</div>
                         <div class="step-description">Нажмите кнопку Регистрация</div>
                     </div>
-                    <!-- ПУНКТ 2: Плейлист (Ранее 3) -->
                     <div class="step-item">
                         <div class="step-number">2</div><div class="step-title">Плейлист</div>
                         <div class="step-description">Скачать плейлист</div>
                     </div>
-                    <!-- ПУНКТ 3: Загрузка (Ранее 4) -->
                     <div class="step-item">
                         <div class="step-number">3</div><div class="step-title">Загрузка</div>
                         <div class="step-description">Загрузить плейлист в Ваше устройство</div>
                     </div>
-                    <!-- ПУНКТ 4: Оплата (Ранее 2) -->
                     <div class="step-item">
                         <div class="step-number">4</div><div class="step-title">Оплата</div>
                         <div class="step-description">Оплатить подписку</div>
@@ -1238,6 +1234,7 @@
 
         function extractPhoneNumber(phone) { return phone.replace(/\D/g, '').slice(-10); }
         
+        // --- ИЗМЕНЕННАЯ ФУНКЦИЯ openModal ДЛЯ ДОБАВЛЕНИЯ ЗАКРЫТИЯ ПО КЛИКУ ВНЕ КОНТЕНТА ---
         function openModal(modalId) { 
              const modal = document.getElementById(modalId);
              if (!modal) return;
@@ -1247,8 +1244,26 @@
 
              modal.style.display = 'flex'; 
              modal.scrollTop = 0; 
+             
+             // Добавляем обработчик для закрытия при клике вне содержимого
+             // Проверяем, что модалка не "channelModal" (там другая логика)
+             if (modalId !== 'channelModal') {
+                 modal.onclick = (event) => {
+                     // Если клик был прямо по фону модалки (самому элементу .modal)
+                     if (event.target === modal) {
+                         closeModal(modalId);
+                     }
+                 };
+             }
         }
-        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+        function closeModal(modalId) { 
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none'; 
+                modal.onclick = null; // Удаляем временный обработчик
+            }
+        }
+        // ----------------------------------------------------------------------------------
 
         function showStatus(message, type, elementId = 'statusMessage') {
             const statusEl = document.getElementById(elementId);
@@ -1668,5 +1683,3 @@
     </script>
 </body>
 </html>
-
-
