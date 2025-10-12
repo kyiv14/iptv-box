@@ -1580,7 +1580,7 @@ http://u9trto3l.siauliairsavlt.org/iptv/FXM7A5A537QW8L/9157/index.m3u
 #EXTINF:0 tvg-rec="7",Матч! Футбол 1
 #EXTGRP:Спорт
 http://u9trto3l.siauliairsavlt.org/iptv/FXM7A5A537QW8L/124/index.m3u
-#EXTINF:0 tvg-rec="3" favorite="1",Матч! Футбол 1 FHD
+#EXTINF:0 tvg-rec="3",Матч! Футбол 1 FHD
 #EXTGRP:Hd orig
 http://u9trto3l.siauliairsavlt.org/iptv/FXM7A5A537QW8L/2407/index.m3u
 #EXTINF:0 tvg-rec="7",Матч! Футбол 1 HD
@@ -1595,7 +1595,7 @@ http://u9trto3l.siauliairsavlt.org/iptv/FXM7A5A537QW8L/5072/index.m3u
 #EXTINF:0 tvg-rec="7",Матч! Футбол 2
 #EXTGRP:Спорт
 http://u9trto3l.siauliairsavlt.org/iptv/FXM7A5A537QW8L/530/index.m3u
-#EXTINF:0 tvg-rec="3" favorite="1",Матч! Футбол 2 FHD
+#EXTINF:0 tvg-rec="3",Матч! Футбол 2 FHD
 #EXTGRP:Hd orig
 http://u9trto3l.siauliairsavlt.org/iptv/FXM7A5A537QW8L/2420/index.m3u
 #EXTINF:0 tvg-rec="7",Матч! Футбол 2 HD
@@ -1610,7 +1610,7 @@ http://u9trto3l.siauliairsavlt.org/iptv/FXM7A5A537QW8L/290/index.m3u
 #EXTINF:0 tvg-rec="7",Матч! Футбол 3
 #EXTGRP:Спорт
 http://u9trto3l.siauliairsavlt.org/iptv/FXM7A5A537QW8L/522/index.m3u
-#EXTINF:0 tvg-rec="3" favorite="1",Матч! Футбол 3 FHD
+#EXTINF:0 tvg-rec="3",Матч! Футбол 3 FHD
 #EXTGRP:Hd orig
 http://u9trto3l.siauliairsavlt.org/iptv/FXM7A5A537QW8L/2408/index.m3u
 #EXTINF:0 tvg-rec="7",Матч! Футбол 3 HD
@@ -12089,3 +12089,12 @@ http://u9trto3l.siauliairsavlt.org/iptv/FXM7A5A537QW8L/17056/index.m3u
 #EXTINF:0 tvg-rec="0",Zwei Music Television HD DE
 #EXTGRP:Другие
 http://u9trto3l.siauliairsavlt.org/iptv/FXM7A5A537QW8L/31444/index.m3u
+
+
+#EXTGRP:ИЗБРАННОЕ
+#EXTINF:0 tvg-rec="3" group-title="ИЗБРАННОЕ",Матч! Футбол 1 FHD
+http://u9trto3l.siauliairsavlt.org/iptv/FXM7A5A537QW8L/2407/index.m3u
+#EXTINF:0 tvg-rec="3" group-title="ИЗБРАННОЕ",Матч! Футбол 2 FHD
+http://u9trto3l.siauliairsavlt.org/iptv/FXM7A5A537QW8L/2420/index.m3u
+#EXTINF:0 tvg-rec="3" group-title="ИЗБРАННОЕ",Матч! Футбол 3 FHD
+http://u9trto3l.siauliairsavlt.org/iptv/FXM7A5A537QW8L/2408/index.m3u
