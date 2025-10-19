@@ -1416,7 +1416,7 @@
                 if (currentClientData.test_end_date.includes('T')) {
                     // Если есть полное время, запускаем таймер
                     startCountdownTimer(currentClientData.test_end_date);
-                    testBtn.textContent = 'Обновить тест-плейлист';
+                    testBtn.textContent = 'Взять тест';
                     // Деактивируем кнопку, если тест истек (проверяем уже по текущему времени)
                     testBtn.disabled = new Date().getTime() >= testEndDateTime;
                 } else {
