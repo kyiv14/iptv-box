@@ -1422,10 +1422,23 @@
                 } else {
                      // Если это старый формат YYYY-MM-DD (только дата), просто отображаем статус
                     document.getElementById('testCountdownTimer').classList.remove('active');
-                    document.getElementById('testCountdownTimer').textContent = isTestExpired(currentClientData) ? 'Тест завершен!' : 'Тестовый период активен.';
-                    document.getElementById('testCountdownTimer').classList.add('active'); // Показываем, но без таймера
-                    testBtn.textContent = 'Обновить тест-плейлист';
-                    testBtn.disabled = isTestExpired(currentClientData);
+                    if (isTestExpired(currentClientData)) {
+                        document.getElementById('testCountdownTimer').textContent = 'Тест завершен!';
+                        document.getElementById('testCountdownTimer').classList.add('active'); 
+                        testBtn.textContent = 'Взять тест';
+                        testBtn.disabled = true;
+                    } else {
+                        // **[ИЗМЕНЕНИЕ]: Запускаем таймер на 24 часа для отображения**
+                        const twentyFourHoursFromNow = new Date(new Date().getTime() + (24 * 60 * 60 * 1000)).toISOString();
+                        startCountdownTimer(twentyFourHoursFromNow);
+                        document.getElementById('testCountdownTimer').style.color = 'var(--system-orange)';
+                        document.getElementById('testCountdownTimer').style.borderColor = 'var(--system-orange)';
+                        document.getElementById('testCountdownTimer').style.background = '#fff8f0';
+                        // *************************************************************
+
+                        testBtn.textContent = 'Обновить тест-плейлист';
+                        testBtn.disabled = false;
+                    }
                 }
             } else {
                 // Если тест не брали
