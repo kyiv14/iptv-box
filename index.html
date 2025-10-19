@@ -381,7 +381,7 @@
             width: 100%;
             max-width: 300px;
             display: block;
-            margin: 0 auto 25px;
+            margin: 0 auto 15px; /* Уменьшаем нижний отступ, чтобы добавить таймер */
         }
         #getTestBtn:hover {
             background: var(--orange-hover);
@@ -391,6 +391,26 @@
         #getTestBtn:active {
              transform: translateY(0);
             box-shadow: 0 2px 5px rgba(255, 149, 0, 0.4);
+        }
+        
+        /* СТИЛИ ДЛЯ ТАЙМЕРА ОБРАТНОГО ОТСЧЕТА */
+        #testCountdownTimer {
+            display: none; /* По умолчанию скрыт */
+            margin: 0 auto 25px;
+            padding: 10px 15px;
+            max-width: 300px;
+            border: 2px solid var(--system-orange);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--system-orange);
+            background: #fff8f0;
+            box-shadow: 0 2px 10px rgba(255, 149, 0, 0.2);
+        }
+        
+        #testCountdownTimer.active {
+            display: block; /* Отображается, когда активен */
         }
 
 
@@ -1089,6 +1109,7 @@
                     <h2 style="font-weight: 600;">Ваш плейлист</h2> 
                     <p class="expiration-info" id="expirationMessage"></p>
                     <button id="getTestBtn" onclick="handleTestBtnClick()">Взять тест</button>
+                    <div id="testCountdownTimer"></div> 
                     <p style="color: #666; margin-bottom: 25px;">Используйте ссылку ниже для подключения к IPTV-сервису на вашем устройстве.</p>
                     <div class="playlist-link-box" id="finalPlaylistLink">Загрузка...</div>
                     <div class="playlist-info-actions">
@@ -1200,6 +1221,7 @@
         let currentClientData = null; 
         let currentPlaylistResult = null;
         let currentTestPlaylistResult = null; 
+        let countdownTimerInterval = null; // Переменная для хранения интервала таймера
         
         function getGitHubToken() { return GITHUB_TOKEN_PART_1 + GITHUB_TOKEN_PART_2 + GITHUB_TOKEN_PART_3; }
 
@@ -1226,11 +1248,72 @@
                 return false; 
             }
             const today = new Date();
-            today.setHours(0, 0, 0, 0);
+            // Сравниваем с датой (без времени)
             const testEndDate = new Date(clientData.test_end_date);
             testEndDate.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
             return today.getTime() >= testEndDate.getTime();
         }
+        
+        // НОВАЯ ФУНКЦИЯ: Таймер обратного отсчета
+        function startCountdownTimer(testEndDateString) {
+            const timerEl = document.getElementById('testCountdownTimer');
+            if (!timerEl) return;
+            
+            // Очищаем предыдущий интервал, если он был
+            if (countdownTimerInterval) {
+                clearInterval(countdownTimerInterval);
+                countdownTimerInterval = null;
+            }
+            
+            if (!testEndDateString || testEndDateString === "N/A") {
+                timerEl.classList.remove('active');
+                timerEl.textContent = '';
+                return;
+            }
+            
+            const targetDate = new Date(testEndDateString);
+            
+            // Если дата истечения уже прошла (проверка с текущим временем, а не только с датой 00:00)
+            if (new Date() >= targetDate) {
+                 timerEl.classList.remove('active');
+                 timerEl.textContent = 'Тест завершен!';
+                 return;
+            }
+            
+            timerEl.classList.add('active'); // Показываем таймер
+            
+            countdownTimerInterval = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = targetDate.getTime() - now;
+                
+                if (distance < 0) {
+                    clearInterval(countdownTimerInterval);
+                    countdownTimerInterval = null;
+                    timerEl.textContent = "Тест завершен! Перезагрузите страницу.";
+                    timerEl.style.color = 'var(--system-red)';
+                    timerEl.style.borderColor = 'var(--system-red)';
+                    document.getElementById('getTestBtn').disabled = true;
+                    // Опционально: можно тут же вызвать openModal('expiredTestModal');
+                    return;
+                }
+                
+                // Расчет времени
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                // Форматирование
+                const h = String(hours + days * 24).padStart(2, '0');
+                const m = String(minutes).padStart(2, '0');
+                const s = String(seconds).padStart(2, '0');
+                
+                timerEl.innerHTML = `До окончания теста: <span style="font-size: 1.2em;">${h}:${m}:${s}</span>`;
+                
+            }, 1000);
+        }
+        // КОНЕЦ НОВОЙ ФУНКЦИИ
 
         function extractPhoneNumber(phone) { return phone.replace(/\D/g, '').slice(-10); }
         
@@ -1290,6 +1373,12 @@
         
         function logout() {
             currentClientData = null; currentPlaylistResult = null; currentTestPlaylistResult = null; 
+            if (countdownTimerInterval) { // Очистка таймера при выходе
+                clearInterval(countdownTimerInterval);
+                countdownTimerInterval = null;
+            }
+            document.getElementById('testCountdownTimer').classList.remove('active'); // Скрываем таймер
+            document.getElementById('testCountdownTimer').textContent = '';
             document.querySelector('.post-auth-layout').style.display = 'none';
             document.getElementById('preAuthContent').style.display = 'block';
             document.getElementById('howToConnectBlock').style.display = 'block';
@@ -1318,6 +1407,33 @@
             
             document.getElementById('clientNameGreeting').textContent = `Привет, ${currentClientData.name || 'Клиент'}!`;
             document.getElementById('expirationMessage').textContent = `Ваш тариф ${getExpirationDays(currentClientData.paymentDate, currentClientData.months)}.`;
+            
+            // Логика отображения таймера
+            const testBtn = document.getElementById('getTestBtn');
+            if (currentClientData.test_end_date) {
+                const testEndDateTime = new Date(currentClientData.test_end_date).getTime();
+                // Проверяем, есть ли время в строке (не просто дата YYYY-MM-DD)
+                if (currentClientData.test_end_date.includes('T')) {
+                    // Если есть полное время, запускаем таймер
+                    startCountdownTimer(currentClientData.test_end_date);
+                    testBtn.textContent = 'Обновить тест-плейлист';
+                    // Деактивируем кнопку, если тест истек (проверяем уже по текущему времени)
+                    testBtn.disabled = new Date().getTime() >= testEndDateTime;
+                } else {
+                     // Если это старый формат YYYY-MM-DD (только дата), просто отображаем статус
+                    document.getElementById('testCountdownTimer').classList.remove('active');
+                    document.getElementById('testCountdownTimer').textContent = isTestExpired(currentClientData) ? 'Тест завершен!' : 'Тестовый период активен.';
+                    document.getElementById('testCountdownTimer').classList.add('active'); // Показываем, но без таймера
+                    testBtn.textContent = 'Обновить тест-плейлист';
+                    testBtn.disabled = isTestExpired(currentClientData);
+                }
+            } else {
+                // Если тест не брали
+                document.getElementById('testCountdownTimer').classList.remove('active');
+                document.getElementById('testCountdownTimer').textContent = '';
+                testBtn.textContent = 'Взять тест';
+                testBtn.disabled = false;
+            }
             
             // Здесь отображаем короткую ссылку
             document.getElementById('finalPlaylistLink').textContent = currentPlaylistResult.isgdUrl;
@@ -1482,19 +1598,25 @@
                 return;
             }
             
-            if (isTestExpired(currentClientData)) {
+            // Проверка истечения с учетом времени
+            if (currentClientData.test_end_date && new Date().getTime() >= new Date(currentClientData.test_end_date).getTime()) {
                 openModal('expiredTestModal');
                 return;
             }
             
             try {
-                if (!currentClientData.test_end_date) {
+                const isNewTest = !currentClientData.test_end_date || isTestExpired(currentClientData);
+                
+                if (isNewTest) {
                     const today = new Date();
-                    // ИСПРАВЛЕНО: Устанавливаем тестовый период в 24 часа (1 день)
+                    // ИСПРАВЛЕНО: Устанавливаем тестовый период в 24 часа (1 день) с текущим временем
                     const endDate = new Date(today.getTime() + (24 * 60 * 60 * 1000)); 
-                    currentClientData.test_end_date = endDate.toISOString().split('T')[0]; 
+                    currentClientData.test_end_date = endDate.toISOString(); // Сохраняем ISO-строку с временем
                     
                     await updateClientData(currentClientData);
+                    // Обновляем отображение на странице
+                    startCountdownTimer(currentClientData.test_end_date);
+                    document.getElementById('getTestBtn').textContent = 'Обновить тест-плейлист';
                 }
                 
                 currentTestPlaylistResult = await createTestPlaylist(currentClientData.phone);
@@ -1536,7 +1658,8 @@
                     showStatus("Проверьте поля: заполнены, пароли совпадают (мин. 6 симв.), телефон (мин. 10 цифр).", "error");
                     return;
                 }
-                const newClient = { name, phone: cleanPhoneDigits, password, key: '0000000000', paymentDate: new Date().toISOString().split('T')[0], months: '1', registration_date: new Date().toISOString() };
+                // Изначально test_end_date не установлен
+                const newClient = { name, phone: cleanPhoneDigits, password, key: '0000000000', paymentDate: new Date().toISOString().split('T')[0], months: '1', registration_date: new Date().toISOString(), test_end_date: "N/A" }; 
                 try {
                     await sendRegistrationToTelegram(newClient);
                     
@@ -1566,6 +1689,9 @@
                     const { clients } = await loadClientsFromGitHub();
                     const client = clients.find(c => c.phone === cleanLoginPhoneDigits && c.password === loginPassword);
                     if (client) {
+                        // Если в старых данных нет test_end_date, добавляем "N/A"
+                        if (!client.test_end_date) client.test_end_date = "N/A";
+                        
                         currentClientData = client;
                         currentPlaylistResult = await createPlaylist(loginPhone, client.key || '0000000000');
                         closeModal('loginModal');
