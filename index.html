@@ -1244,11 +1244,17 @@
         
         // НОВАЯ ФУНКЦИЯ: Проверка истечения тестового периода
         function isTestExpired(clientData) {
-            if (!clientData || !clientData.test_end_date) {
+            if (!clientData || !clientData.test_end_date || clientData.test_end_date === "N/A") {
                 return false; 
             }
+            
+            // Если дата имеет время, используем точное сравнение
+            if (clientData.test_end_date.includes('T')) {
+                return new Date().getTime() >= new Date(clientData.test_end_date).getTime();
+            }
+
+            // Для старого формата (только дата YYYY-MM-DD)
             const today = new Date();
-            // Сравниваем с датой (без времени)
             const testEndDate = new Date(clientData.test_end_date);
             testEndDate.setHours(0, 0, 0, 0);
             today.setHours(0, 0, 0, 0);
@@ -1266,7 +1272,7 @@
                 countdownTimerInterval = null;
             }
             
-            if (!testEndDateString || testEndDateString === "N/A") {
+            if (!testEndDateString || testEndDateString === "N/A" || !testEndDateString.includes('T')) {
                 timerEl.classList.remove('active');
                 timerEl.textContent = '';
                 return;
@@ -1278,10 +1284,16 @@
             if (new Date() >= targetDate) {
                  timerEl.classList.remove('active');
                  timerEl.textContent = 'Тест завершен!';
+                 timerEl.style.color = 'var(--system-red)';
+                 timerEl.style.borderColor = 'var(--system-red)';
+                 timerEl.style.background = '#fff0f0';
                  return;
             }
             
             timerEl.classList.add('active'); // Показываем таймер
+            timerEl.style.color = 'var(--system-orange)';
+            timerEl.style.borderColor = 'var(--system-orange)';
+            timerEl.style.background = '#fff8f0';
             
             countdownTimerInterval = setInterval(function() {
                 const now = new Date().getTime();
@@ -1293,6 +1305,7 @@
                     timerEl.textContent = "Тест завершен! Перезагрузите страницу.";
                     timerEl.style.color = 'var(--system-red)';
                     timerEl.style.borderColor = 'var(--system-red)';
+                    timerEl.style.background = '#fff0f0';
                     document.getElementById('getTestBtn').disabled = true;
                     // Опционально: можно тут же вызвать openModal('expiredTestModal');
                     return;
@@ -1410,41 +1423,46 @@
             
             // Логика отображения таймера
             const testBtn = document.getElementById('getTestBtn');
-            if (currentClientData.test_end_date) {
-                const testEndDateTime = new Date(currentClientData.test_end_date).getTime();
-                // Проверяем, есть ли время в строке (не просто дата YYYY-MM-DD)
+            const timerEl = document.getElementById('testCountdownTimer');
+            
+            // Сбрасываем предыдущий статус
+            timerEl.classList.remove('active');
+            timerEl.textContent = '';
+            testBtn.disabled = false;
+            // ИЗМЕНЕНИЕ: Всегда устанавливаем текст кнопки на "Взять тест"
+            testBtn.textContent = 'Взять тест'; 
+
+            if (currentClientData.test_end_date && currentClientData.test_end_date !== "N/A") {
+                
+                // Проверяем, есть ли время в строке (формат ISO с 'T')
                 if (currentClientData.test_end_date.includes('T')) {
                     // Если есть полное время, запускаем таймер
                     startCountdownTimer(currentClientData.test_end_date);
-                    testBtn.textContent = 'Взять тест';
                     // Деактивируем кнопку, если тест истек (проверяем уже по текущему времени)
-                    testBtn.disabled = new Date().getTime() >= testEndDateTime;
-                } else {
-                     // Если это старый формат YYYY-MM-DD (только дата), просто отображаем статус
-                    document.getElementById('testCountdownTimer').classList.remove('active');
                     if (isTestExpired(currentClientData)) {
-                        document.getElementById('testCountdownTimer').textContent = 'Тест завершен!';
-                        document.getElementById('testCountdownTimer').classList.add('active'); 
-                        testBtn.textContent = 'Взять тест';
+                         testBtn.disabled = true;
+                    }
+                } else {
+                    // Старый формат YYYY-MM-DD (только дата)
+                    if (isTestExpired(currentClientData)) {
+                        timerEl.textContent = 'Тест завершен!';
+                        timerEl.classList.add('active'); 
+                        timerEl.style.color = 'var(--system-red)';
+                        timerEl.style.borderColor = 'var(--system-red)';
+                        timerEl.style.background = '#fff0f0';
                         testBtn.disabled = true;
                     } else {
-                        // **[ИЗМЕНЕНИЕ]: Запускаем таймер на 24 часа для отображения**
-                        const twentyFourHoursFromNow = new Date(new Date().getTime() + (24 * 60 * 60 * 1000)).toISOString();
-                        startCountdownTimer(twentyFourHoursFromNow);
-                        document.getElementById('testCountdownTimer').style.color = 'var(--system-orange)';
-                        document.getElementById('testCountdownTimer').style.borderColor = 'var(--system-orange)';
-                        document.getElementById('testCountdownTimer').style.background = '#fff8f0';
-                        // *************************************************************
-
-                        testBtn.textContent = 'Обновить тест-плейлист';
+                        // Тест активен, но без точного времени (старый формат). Показываем сообщение.
+                        timerEl.textContent = 'Тестовый период активен.';
+                        timerEl.classList.add('active'); 
+                        timerEl.style.color = 'var(--system-green)';
+                        timerEl.style.borderColor = 'var(--system-green)';
+                        timerEl.style.background = '#f0fff0';
                         testBtn.disabled = false;
                     }
                 }
             } else {
-                // Если тест не брали
-                document.getElementById('testCountdownTimer').classList.remove('active');
-                document.getElementById('testCountdownTimer').textContent = '';
-                testBtn.textContent = 'Взять тест';
+                // Если тест не брали или N/A
                 testBtn.disabled = false;
             }
             
@@ -1611,25 +1629,27 @@
                 return;
             }
             
-            // Проверка истечения с учетом времени
-            if (currentClientData.test_end_date && new Date().getTime() >= new Date(currentClientData.test_end_date).getTime()) {
+            // Проверка истечения с учетом точного времени
+            if (currentClientData.test_end_date && currentClientData.test_end_date.includes('T') && new Date().getTime() >= new Date(currentClientData.test_end_date).getTime()) {
                 openModal('expiredTestModal');
                 return;
             }
             
             try {
-                const isNewTest = !currentClientData.test_end_date || isTestExpired(currentClientData);
+                const isNewTestOrExpired = !currentClientData.test_end_date || currentClientData.test_end_date === "N/A" || isTestExpired(currentClientData);
                 
-                if (isNewTest) {
+                if (isNewTestOrExpired) {
                     const today = new Date();
-                    // ИСПРАВЛЕНО: Устанавливаем тестовый период в 24 часа (1 день) с текущим временем
+                    // Устанавливаем тестовый период в 24 часа (1 день) с текущим временем
                     const endDate = new Date(today.getTime() + (24 * 60 * 60 * 1000)); 
                     currentClientData.test_end_date = endDate.toISOString(); // Сохраняем ISO-строку с временем
                     
+                    // Обновляем данные на GitHub
                     await updateClientData(currentClientData);
-                    // Обновляем отображение на странице
+                    
+                    // После успешного обновления и запускаем таймер
                     startCountdownTimer(currentClientData.test_end_date);
-                    document.getElementById('getTestBtn').textContent = 'Обновить тест-плейлист';
+                    // ИЗМЕНЕНИЕ: Убран текст "Обновить тест-плейлист"
                 }
                 
                 currentTestPlaylistResult = await createTestPlaylist(currentClientData.phone);
