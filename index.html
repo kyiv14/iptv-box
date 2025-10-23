@@ -1003,6 +1003,60 @@
              box-shadow: 0 6px 15px rgba(255, 59, 48, 0.5) !important;
         }
         /* =================================================== */
+        /* НОВЫЕ СТИЛИ: Уведомление (Тост) и Прелоадер */
+        /* =================================================== */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 90%;
+            pointer-events: none; /* Чтобы не блокировать клики на странице */
+        }
+        .toast {
+            background-color: #333;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transform: translateX(100%);
+            font-size: 16px;
+            font-weight: 500;
+            pointer-events: all; 
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        @keyframes spinner {
+            to { transform: rotate(360deg); }
+        }
+        #loadingOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 1001; /* Выше модалок */
+            justify-content: center;
+            align-items: center;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(0, 123, 255, 0.1);
+            border-top-color: var(--system-blue);
+            border-radius: 50%;
+            animation: spinner 0.8s ease-in-out infinite;
+        }
+        /* =================================================== */
         /* ОБЩАЯ АДАПТИВНОСТЬ (повтор из client/index.html) */
         /* =================================================== */
         @media (max-width: 900px) {
@@ -1111,7 +1165,7 @@
                     <div class="playlist-link-box" id="finalPlaylistLink">Загрузка...</div>
                     <div class="playlist-info-actions">
                         <button id="copyLinkBtnPage" style="background: var(--system-blue);">Копировать ссылку</button>
-                        <button id="downloadLinkBtnBtnPage" style="background: var(--system-green);">Скачать файл</button>
+                        <button id="downloadLinkBtnPage" style="background: var(--system-green);">Скачать файл</button>
                     </div>
                 </div>
                 <div id="paymentBlock" class="payment-block playlist-info-page">
@@ -1193,6 +1247,13 @@
             <button class="submit-btn-modern payment-btn" onclick="closeModal('expiredTestModal'); document.getElementById('paymentBlock').scrollIntoView({ behavior: 'smooth' });">Перейти к оплате</button>
         </div>
     </div>
+
+    <div id="toast-container"></div>
+    
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+
     <script>
         // =================================================================
         // КОНФИГУРАЦИЯ (Извлечена из переменных окружения Netlify)
@@ -1357,6 +1418,39 @@
             }
         }
         // ----------------------------------------------------------------------------------
+        
+        // НОВАЯ ФУНКЦИЯ: Всплывающее уведомление (Toast)
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            
+            container.appendChild(toast);
+            
+            // Показать
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            // Скрыть и удалить
+            setTimeout(() => {
+                toast.classList.remove('show');
+                toast.addEventListener('transitionend', () => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                });
+            }, 3000); 
+        }
+
+        // НОВЫЕ ФУНКЦИИ: Управление прелоадером
+        function showLoader() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+        function hideLoader() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
 
         function showStatus(message, type, elementId = 'statusMessage') {
             const statusEl = document.getElementById(elementId);
@@ -1364,10 +1458,12 @@
             statusEl.className = 'status-message ' + type;
             statusEl.style.display = 'block';
         }
+        
+        // ИЗМЕНЕНО: Замена alert на showToast
         function copyToClipboard(text, event) {
             if(event) event.preventDefault();
             navigator.clipboard.writeText(text).then(() => {
-                alert('Скопировано в буфер обмена: ' + text);
+                showToast('Скопировано в буфер обмена: ' + text);
             }).catch(err => console.error('Ошибка копирования: ', err));
             return false;
         }
@@ -1622,7 +1718,7 @@
         
         async function handleTestBtnClick() {
             if (!currentClientData) {
-                alert('Сначала войдите в систему.');
+                showToast('Сначала войдите в систему.');
                 return;
             }
             
@@ -1633,6 +1729,8 @@
             }
             
             try {
+                showLoader(); // Показать прелоадер
+                
                 const isNewTestOrExpired = !currentClientData.test_end_date || currentClientData.test_end_date === "N/A" || isTestExpired(currentClientData);
                 
                 if (isNewTestOrExpired) {
@@ -1664,9 +1762,11 @@
 
                 document.getElementById('testStatusMessage').style.display = 'none';
                 
+                hideLoader(); // Скрыть прелоадер
                 openModal('testPlaylistModal');
                 
             } catch (error) {
+                hideLoader(); // Скрыть прелоадер при ошибке
                 showStatus(`❌ Ошибка создания тестового плейлиста: ${error.message}`, "error", 'testStatusMessage');
                 console.error('Ошибка создания тестового плейлиста:', error);
             }
@@ -1688,6 +1788,9 @@
                     showStatus("Проверьте поля: заполнены, пароли совпадают (мин. 6 симв.), телефон (мин. 10 цифр).", "error");
                     return;
                 }
+
+                showLoader(); // Показать прелоадер
+
                 // Изначально test_end_date не установлен
                 const newClient = { name, phone: cleanPhoneDigits, password, key: '0000000000', paymentDate: new Date().toISOString().split('T')[0], months: '1', registration_date: new Date().toISOString(), test_end_date: "N/A" }; 
                 try {
@@ -1700,13 +1803,19 @@
                     document.getElementById('registrationForm').reset();
                     closeModal('registrationModal');
                     
+                    hideLoader(); // Скрыть прелоадер
+                    
                     // --- ВОССТАНОВЛЕНО: Открываем модалку входа после регистрации ---
                     document.getElementById('loginPhone').value = phone; 
                     document.getElementById('loginPassword').value = password; 
                     openModal('loginModal');
                     // -----------------------------------------------------------
 
-                } catch (error) { showStatus(`❌ Ошибка: ${error.message}`, "error"); console.error('Ошибка регистрации:', error); }
+                } catch (error) { 
+                    hideLoader(); // Скрыть прелоадер при ошибке
+                    showStatus(`❌ Ошибка: ${error.message}`, "error"); 
+                    console.error('Ошибка регистрации:', error); 
+                }
             });
 
             document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -1715,6 +1824,9 @@
                 const loginPassword = document.getElementById('loginPassword').value;
                 const cleanLoginPhoneDigits = extractPhoneNumber(loginPhone);
                 if (!loginPhone || !loginPassword) { showStatus('Заполните все поля.', "error", 'loginStatusMessage'); return; }
+                
+                showLoader(); // Показать прелоадер
+
                 try {
                     const { clients } = await loadClientsFromGitHub();
                     const client = clients.find(c => c.phone === cleanLoginPhoneDigits && c.password === loginPassword);
@@ -1726,8 +1838,17 @@
                         currentPlaylistResult = await createPlaylist(loginPhone, client.key || '0000000000');
                         closeModal('loginModal');
                         showPlaylistPage();
-                    } else { showStatus('Неверный номер или пароль.', "error", 'loginStatusMessage'); }
-                } catch (error) { showStatus(`❌ Ошибка входа: ${error.message}`, "error", 'loginStatusMessage'); console.error('Ошибка входа:', error); }
+                        
+                        hideLoader(); // Скрыть прелоадер
+                    } else { 
+                        hideLoader(); // Скрыть прелоадер при ошибке
+                        showStatus('Неверный номер или пароль.', "error", 'loginStatusMessage'); 
+                    }
+                } catch (error) { 
+                    hideLoader(); // Скрыть прелоадер при ошибке
+                    showStatus(`❌ Ошибка входа: ${error.message}`, "error", 'loginStatusMessage'); 
+                    console.error('Ошибка входа:', error); 
+                }
             });
             
             // --- УДАЛЕНА ЛОГИКА ПЕРЕКЛЮЧЕНИЯ НА ВНУТРЕННЮЮ СТРАНИЦУ СПИСКА КАНАЛОВ ---
